@@ -1,31 +1,43 @@
+import { ImageProps } from '@/lib/sanity.queries'
 import cn from 'classnames'
-import { urlForImage } from 'lib/sanity.image'
-import Image from 'next/image'
 import Link from 'next/link'
+import { SanityImage } from './shared/SanityImage'
 
 interface CoverImageProps {
   title: string
-  slug?: string
-  image: any
+  image: ImageProps
+  maxWidth?: number
   priority?: boolean
+  sizes?: string
+  format?: 'square' | 'landscape' | 'portrait'
+  linkVariant?: 'internal' | 'external'
+  slug?: string
 }
 
 export default function CoverImage(props: CoverImageProps) {
-  const { title, slug, image: source, priority } = props
-  const image = source?.asset?._ref ? (
+  const {
+    title,
+    slug,
+    image: source,
+    priority,
+    linkVariant,
+    sizes,
+    format,
+    maxWidth,
+  } = props
+  const internalLink = linkVariant ? linkVariant === 'internal' : true
+  const image = source?._id ? (
     <div
       className={cn('shadow-small', {
         'transition-shadow duration-200 hover:shadow-medium': slug,
       })}
     >
-      <Image
-        className="h-auto w-full"
-        width={2000}
-        height={1000}
-        alt=""
-        src={urlForImage(source).height(1000).width(2000).url()}
-        sizes="100vw"
+      <SanityImage
+        image={source}
+        sizes={sizes ?? '100vw'}
+        format={format}
         priority={priority}
+        maxWidth={maxWidth}
       />
     </div>
   ) : (
@@ -35,7 +47,12 @@ export default function CoverImage(props: CoverImageProps) {
   return (
     <div className="sm:mx-0">
       {slug ? (
-        <Link href={`/posts/${slug}`} aria-label={title}>
+        <Link
+          href={slug}
+          aria-label={title}
+          target={internalLink ? undefined : '_blank'}
+          rel={internalLink ? undefined : 'noopener noreferrer'}
+        >
           {image}
         </Link>
       ) : (

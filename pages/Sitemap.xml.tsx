@@ -1,4 +1,4 @@
-import { getAllPosts, getClient } from 'lib/sanity.client'
+import { getAllPostsSlugs } from 'lib/sanity.client'
 
 type SitemapLocation = {
   url: string
@@ -52,17 +52,14 @@ export default function SiteMap() {
 }
 
 export async function getServerSideProps({ res }) {
-  const client = getClient()
-
   // Get list of Post urls
-  const [posts = []] = await Promise.all([getAllPosts(client)])
+  const [posts = []] = await Promise.all([getAllPostsSlugs()])
   const postUrls: SitemapLocation[] = posts
     .filter(({ slug = '' }) => slug)
     .map((post) => {
       return {
         url: `/posts/${post.slug}`,
         priority: 0.5,
-        lastmod: new Date(post._updatedAt),
       }
     })
 

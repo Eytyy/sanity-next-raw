@@ -1,7 +1,3 @@
-/**
- * This config is used to set up Sanity Studio that's mounted on the `/pages/studio/[[...index]].tsx` route
- */
-
 import { visionTool } from '@sanity/vision'
 import {
   apiVersion,
@@ -9,16 +5,18 @@ import {
   DRAFT_MODE_ROUTE,
   projectId,
 } from 'lib/sanity.api'
-import { locate } from 'plugins/locate'
-import { previewDocumentNode } from 'plugins/previewPane'
-import { settingsPlugin, settingsStructure } from 'plugins/settings'
-import { defineConfig } from 'sanity'
-import { deskTool } from 'sanity/desk'
+import { AssetSource, defineConfig } from 'sanity'
 import { presentationTool } from 'sanity/presentation'
+import { structureTool } from 'sanity/structure'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
-import authorType from 'schemas/author'
-import postType from 'schemas/post'
-import settingsType from 'schemas/settings'
+import { media, mediaAssetSource } from 'sanity-plugin-media'
+import { locate } from 'studio/plugins/locate'
+import { singletonPlugin } from 'studio/plugins/singelton'
+
+import { schema } from './studio/schemas'
+import homeType from './studio/schemas/singletons/home'
+import settingsType from './studio/schemas/singletons/settings'
+import { structure } from './studio/structure'
 
 const title =
   process.env.NEXT_PUBLIC_SANITY_PROJECT_TITLE || 'Next.js Blog with Sanity.io'
@@ -28,15 +26,10 @@ export default defineConfig({
   projectId,
   dataset,
   title,
-  schema: {
-    // If you want more content types, you can add them to this array
-    types: [authorType, postType, settingsType],
-  },
+  schema,
   plugins: [
-    deskTool({
-      structure: settingsStructure(settingsType),
-      // `defaultDocumentNode` is responsible for adding a “Preview” tab to the document pane
-      defaultDocumentNode: previewDocumentNode(),
+    structureTool({
+      structure: structure,
     }),
     presentationTool({
       locate,
@@ -46,12 +39,27 @@ export default defineConfig({
         },
       },
     }),
-    // Configures the global "new document" button, and document actions, to suit the Settings document singleton
-    settingsPlugin({ type: settingsType.name }),
+    media(),
+    // Configures the global "new document" button, and document actions, to suit the document singleton
+    singletonPlugin({ types: [homeType.name, settingsType.name] }),
     // Add an image asset source for Unsplash
     unsplashImageAsset(),
-    // Vision lets you query your content with GROQ in the studio
-    // https://www.sanity.io/docs/the-vision-plugin
     visionTool({ defaultApiVersion: apiVersion }),
   ],
+  form: {
+    file: {
+      assetSources: (previousAssetSources: AssetSource[]) => {
+        return previousAssetSources.filter(
+          (assetSource) => assetSource !== mediaAssetSource,
+        )
+      },
+    },
+    image: {
+      assetSources: (previousAssetSources: AssetSource[]) => {
+        return previousAssetSources.filter(
+          (assetSource) => assetSource === mediaAssetSource,
+        )
+      },
+    },
+  },
 })

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
-import Container from 'components/BlogContainer'
 import { useSyncExternalStore } from 'react'
+import Container from './shared/Container'
 
 const subscribe = () => () => {}
 
