@@ -1,13 +1,6 @@
 import useEmblaCarousel from 'embla-carousel-react'
 import React from 'react'
-import {
-  MdArrowLeft,
-  MdArrowRight,
-  MdNavigateBefore,
-  MdNavigateNext,
-  MdOutlineArrowBack,
-  MdOutlineArrowForward,
-} from 'react-icons/md'
+import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md'
 
 import Module from '..'
 import { MediaModuleProps } from '../types'
@@ -26,7 +19,6 @@ export default function MediaSlider({ items }: Props) {
   const scrollNext = React.useCallback(() => {
     if (emblaApi) emblaApi.scrollNext()
   }, [emblaApi])
-
   return (
     <div className="embla overflow-hidden relative group" ref={emblaRef}>
       <div className="embla__container flex">

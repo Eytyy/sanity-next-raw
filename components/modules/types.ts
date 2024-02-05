@@ -48,7 +48,7 @@ export type ImageProps = {
 export type ImageModuleProps = {
   _type: 'module.image'
   _key: string
-  image: any
+  image: Omit<ImageProps, 'alt'>
   addCTA: boolean
   addCaption: boolean
   addTextOverlay: boolean

@@ -142,7 +142,7 @@ const artistPreviewFields = groq`
   "slug": slug.current,
 `
 const imageModuleFields = groq`
-  _type, asset->,
+  alt, _type, asset->,
   addCaption, caption,
   addTextOverlay, textOverlay,
   addCTA,
@@ -152,7 +152,7 @@ const imageModuleFields = groq`
     _type == 'linkInternal' => {
       "url": reference->.slug.current
     }
-  },
+  }
 `
 
 const homeHeroModuleFields = groq`
@@ -160,7 +160,10 @@ const homeHeroModuleFields = groq`
   content[] {
     ...,
     _type == 'module.image' => {
-      ${imageModuleFields}
+      ${imageModuleFields},
+      image {
+        ${imageAssetFields}
+      }
     }
   }
 `
@@ -180,14 +183,21 @@ export const indexQuery = groq`
   modules[] {
     _key, _type, title,
     _type == 'module.image' => {
-      ${imageModuleFields}
+      ${imageModuleFields},
+      image {
+        alt,
+        ${imageAssetFields}
+      }
     },
     _type == 'module.media' => {
       variant,
       items[] {
         _key, _type,
         _type == 'module.image' => {
-          ${imageModuleFields}
+          ${imageModuleFields},
+          image {
+            ${imageAssetFields}
+          }
         },
         _type == 'module.video' => {
           "src": video.asset->url,

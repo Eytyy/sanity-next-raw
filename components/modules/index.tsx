@@ -1,5 +1,6 @@
 import React from 'react'
 
+import ImageModule from './Image'
 import MediaModule from './media'
 import ReferencedContent from './ReferencedContent'
 import type { ModuleProps } from './types'
@@ -18,8 +19,10 @@ export default function Module({ module }: { module: ModuleProps }) {
       return <YoutubeVideo {...module} />
     case 'module.media':
       return <MediaModule {...module} />
+    case 'module.image':
+      return <ImageModule {...module} />
     default:
-      console.log('Module type not supported:', module._type)
+      console.log('Module type not supported')
       return null
   }
 }
