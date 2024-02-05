@@ -15,7 +15,7 @@ export default function Header({
   switch (level) {
     case 1:
       return (
-        <header className="mb-10 mt-16 md:mb-12">
+        <header className="mb-10 mt-16 md:mb-12 sticky top-0 z-50">
           <h1 className="text-6xl font-bold leading-tight tracking-tighter md:pr-8 md:text-8xl">
             {title}
           </h1>

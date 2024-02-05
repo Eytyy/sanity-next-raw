@@ -3,9 +3,9 @@ import React, { PropsWithChildren } from 'react'
 
 import { Settings } from '@/lib/sanity.queries'
 
+import { RQProvider } from '../Providers'
 import Container from './Container'
 import Header from './Header'
-import { RQProvider } from '../Providers'
 
 interface LayoutProps {
   preview: boolean

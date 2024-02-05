@@ -179,7 +179,37 @@ export const indexQuery = groq`
   },
   modules[] {
     _key, _type, title,
-
+    _type == 'module.image' => {
+      ${imageModuleFields}
+    },
+    _type == 'module.media' => {
+      variant,
+      items[] {
+        _key, _type,
+        _type == 'module.image' => {
+          ${imageModuleFields}
+        },
+        _type == 'module.video' => {
+          "src": video.asset->url,
+          layout,
+          autoplay,
+          loop,
+          "cover": image {
+            "alt": ^.title,
+            ${imageAssetFields}
+          }
+        },
+        _type == 'module.youtube' => {
+          "src": url,
+          autoplay,
+          loop,
+          "cover": image {
+            "alt": ^.title,
+            ${imageAssetFields}
+          }
+        }
+      }
+    },
     _type == 'module.youtube' => {
       "src": url,
       autoplay,

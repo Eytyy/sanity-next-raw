@@ -1,11 +1,14 @@
+import { useInView } from 'framer-motion'
 import getYouTubeId from 'get-youtube-id'
-import React, { useCallback } from 'react'
+import React, { use, useCallback } from 'react'
 import { MdPlayArrow } from 'react-icons/md'
 import YouTube, { type YouTubePlayer, type YouTubeProps } from 'react-youtube'
 
 import { YoutubeModuleProps } from '../types'
 import BigButton from './BigButton'
+import VideoPorgressBar from './PorgressBar'
 import VideoPoster from './Poster'
+import useVideo from './useVideo'
 import YoutubeVideoControls from './YoutubeControls'
 
 export default function YoutubeVideo({
@@ -14,17 +17,20 @@ export default function YoutubeVideo({
   loop,
   autoplay,
 }: YoutubeModuleProps) {
-  const [player, setPlayer] = React.useState<YouTubePlayer | null>(null)
-  const [playing, setPlaying] = React.useState(false)
-  const [muted, setMuted] = React.useState(false)
-  const id = getYouTubeId(src)
+  const ref = React.useRef(null)
+  const { state, dispatch } = useVideo(autoplay)
+  const { playing, muted, progress } = state
 
+  const [player, setPlayer] = React.useState<YouTubePlayer | null>(null)
+  const id = getYouTubeId(src)
+  const invView = useInView(ref, {
+    amount: 0.9,
+  })
   const opts: YouTubeProps['opts'] = {
     height: '390',
     width: '640',
     playerVars: {
       loop: loop ? 1 : 0,
-      autoplay: autoplay ? 1 : 0,
       enablejsapi: 1,
       playsinline: 1,
       controls: 0,
@@ -33,48 +39,79 @@ export default function YoutubeVideo({
   const playVideo = useCallback(() => {
     if (player) {
       player.playVideo()
-      setPlaying(true)
+      dispatch({ type: 'PLAY' })
     }
-  }, [player])
+  }, [player, dispatch])
 
   const toggleMute = useCallback(() => {
     if (player) {
       if (player.isMuted()) {
         player.unMute()
-        setMuted(false)
+        dispatch({ type: 'TOGGLE_MUTE', payload: false })
       } else {
         player.mute()
-        setMuted(true)
+        dispatch({ type: 'TOGGLE_MUTE', payload: true })
       }
     }
-  }, [player])
+  }, [player, dispatch])
 
   const replayVideo = useCallback(() => {
     if (player) {
       player.seekTo(0)
       player.playVideo()
-      setPlaying(true)
+      dispatch({ type: 'REPLAY' })
     }
-  }, [player])
+  }, [player, dispatch])
 
   const pauseVideo = useCallback(() => {
     if (player) {
       player.pauseVideo()
-      setPlaying(false)
+      dispatch({ type: 'PAUSE' })
     }
-  }, [player])
+  }, [player, dispatch])
+
+  React.useEffect(() => {
+    if (invView && autoplay) {
+      playVideo()
+    } else {
+      pauseVideo()
+    }
+  }, [invView, autoplay, playVideo, pauseVideo])
+
+  const onSeek = useCallback(
+    (seekTime: number) => {
+      if (player) {
+        player.seekTo(seekTime, true)
+      }
+    },
+    [player],
+  )
+
+  // check progress
+  React.useEffect(() => {
+    if (player) {
+      const interval = setInterval(() => {
+        const progress = (player.getCurrentTime() / player.getDuration()) * 100
+        dispatch({ type: 'UPDATE_PROGRESS', payload: progress })
+      }, 1000)
+      return () => clearInterval(interval)
+    }
+  }, [player, dispatch])
 
   return (
-    <div className="relative">
+    <div ref={ref} className="relative">
       <YouTube
         videoId={id}
         iframeClassName="aspect-video w-full h-auto"
         opts={opts}
-        onPlay={() => setPlaying(true)}
-        onPause={() => setPlaying(false)}
-        onReady={(e) => {
-          setPlayer(e.target)
-        }}
+        onPlay={playVideo}
+        onPause={pauseVideo}
+        onReady={(e) => setPlayer(e.target)}
+      />
+      <VideoPorgressBar
+        duration={player ? player.getDuration() : 0}
+        progress={progress}
+        onSeek={onSeek}
       />
       {cover && !playing && (
         <VideoPoster

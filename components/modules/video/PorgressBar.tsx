@@ -25,7 +25,7 @@ export default function VideoPorgressBar({
       ref={progressBarRef}
     >
       <div
-        className="progress-bar bg-black h-full transition-all duration-[0.2s] ease-in-out"
+        className="progress-bar bg-[red] h-full transition-all duration-[0.2s] ease-in-out"
         style={{ width: progressBarWidth }}
       ></div>
     </div>

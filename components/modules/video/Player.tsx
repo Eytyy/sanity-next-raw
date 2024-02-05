@@ -9,54 +9,10 @@ import BigButton from './BigButton'
 import VideoControls from './Controls'
 import VideoPorgressBar from './PorgressBar'
 import VideoPoster from './Poster'
+import useVideo from './useVideo'
 
 interface VideoProps extends VideoModuleProps {
   background?: boolean
-}
-
-type State = {
-  playing: boolean
-  playedOnce: boolean
-  muted: boolean
-  progress: number
-}
-
-const initialState: State = {
-  playing: false,
-  playedOnce: false,
-  muted: false,
-  progress: 0,
-}
-
-type Action =
-  | { type: 'UPDATE_PROGRESS'; payload: number }
-  | { type: 'PLAY' }
-  | { type: 'PAUSE' }
-  | { type: 'TOGGLE_MUTE'; payload: boolean }
-  | { type: 'REPLAY' }
-
-const reducer = (state: State, action: Action): State => {
-  switch (action.type) {
-    case 'PLAY':
-      return { ...state, playing: true, playedOnce: true }
-    case 'PAUSE':
-      return { ...state, playing: false }
-    case 'TOGGLE_MUTE':
-      return { ...state, muted: !state.muted }
-    case 'REPLAY':
-      return { ...state, playing: true }
-    case 'UPDATE_PROGRESS':
-      return { ...state, progress: action.payload }
-    default:
-      return state
-  }
-}
-
-const initializeState = ({ autoplay }: { autoplay: boolean }): State => {
-  return {
-    ...initialState,
-    muted: autoplay,
-  }
 }
 
 export default function VideoPlayer({
@@ -67,12 +23,9 @@ export default function VideoPlayer({
   layout = 'landscape',
   loop = false,
 }: VideoProps) {
+  const { state, dispatch } = useVideo(autoplay)
   const ref = React.useRef<HTMLVideoElement>(null)
-  const [state, setState] = React.useReducer(
-    reducer,
-    { autoplay },
-    initializeState,
-  )
+
   const inView = useInView(ref, {
     amount: 'all',
   })
@@ -80,41 +33,41 @@ export default function VideoPlayer({
   const playVideo = React.useCallback(() => {
     if (ref.current) {
       ref.current.play()
-      setState({ type: 'PLAY' })
+      dispatch({ type: 'PLAY' })
     }
-  }, [])
+  }, [dispatch])
 
   const pauseVideo = React.useCallback(() => {
     if (ref.current) {
       ref.current.pause()
-      setState({ type: 'PAUSE' })
+      dispatch({ type: 'PAUSE' })
     }
-  }, [])
+  }, [dispatch])
 
   const toggleMute = React.useCallback(() => {
     if (ref.current) {
       ref.current.muted = !ref.current.muted
-      setState({
+      dispatch({
         type: 'TOGGLE_MUTE',
         payload: ref.current.muted,
       })
     }
-  }, [])
+  }, [dispatch])
 
   const replayVideo = React.useCallback(() => {
     if (ref.current) {
       ref.current.currentTime = 0
       ref.current.play()
-      setState({ type: 'REPLAY' })
+      dispatch({ type: 'REPLAY' })
     }
-  }, [])
+  }, [dispatch])
 
   const updateProgress = React.useCallback(() => {
     if (ref.current) {
       const progress = (ref.current.currentTime / ref.current.duration) * 100
-      setState({ type: 'UPDATE_PROGRESS', payload: progress })
+      dispatch({ type: 'UPDATE_PROGRESS', payload: progress })
     }
-  }, [ref])
+  }, [ref, dispatch])
 
   const onSeek = (seekTime: number) => {
     ref.current.currentTime = seekTime

@@ -79,6 +79,13 @@ export type VideoModuleProps = {
   loop: boolean
 }
 
+export type MediaModuleProps = {
+  _type: 'module.media'
+  _key: string
+  variant: 'slider' | 'grid'
+  items: (VideoModuleProps | YoutubeModuleProps | ImageModuleProps)[]
+}
+
 export type ModuleProps =
   | ReferencedPostsModuleProps
   | ReferencedArtistsModuleProps
@@ -86,3 +93,4 @@ export type ModuleProps =
   | ImageModuleProps
   | YoutubeModuleProps
   | VideoModuleProps
+  | MediaModuleProps

@@ -31,6 +31,7 @@ export default defineField({
         { type: 'module.video' },
         { type: 'module.youtube' },
       ],
+      validation: (Rule) => Rule.min(3).required(),
     }),
   ],
   preview: {
