@@ -44,7 +44,7 @@ export default function PostCard({
             linkVariant={post.variant}
             maxWidth={500}
             sizes="(max-width: 768px) 100vw, 33vw"
-            format="square"
+            layout="square"
           />
         </div>
       )}

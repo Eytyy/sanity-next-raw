@@ -1,5 +1,8 @@
 import { Artist, Artwork, Post } from '@/lib/sanity.queries'
 
+const layouts = ['landscape', 'square', 'portrait'] as const
+export type MediaLayout = (typeof layouts)[number]
+
 export type ReferencedPostsModuleProps = {
   _type: 'module.posts'
   _key: string
@@ -26,6 +29,22 @@ export type ReferencedArtworksModuleProps = {
   addLandingLink: boolean
 }
 
+export type ImageProps = {
+  _type: 'image'
+  _id: string
+  lqip: string
+  width: number
+  height: number
+  alt: string
+  crop: {
+    _type: string
+  }
+  hotspot: {
+    x: number
+    y: number
+  }
+}
+
 export type ImageModuleProps = {
   _type: 'module.image'
   _key: string
@@ -39,8 +58,31 @@ export type ImageModuleProps = {
   textOverlay: string
 }
 
+export type YoutubeModuleProps = {
+  _key: string
+  _type: 'module.youtube'
+  title: string
+  src: string
+  cover?: ImageProps
+  autoplay: boolean
+  loop: boolean
+}
+
+export type VideoModuleProps = {
+  _key: string
+  _type: 'module.video'
+  title: string
+  src: string
+  cover?: ImageProps
+  layout: MediaLayout
+  autoplay: boolean
+  loop: boolean
+}
+
 export type ModuleProps =
   | ReferencedPostsModuleProps
   | ReferencedArtistsModuleProps
   | ReferencedArtworksModuleProps
   | ImageModuleProps
+  | YoutubeModuleProps
+  | VideoModuleProps

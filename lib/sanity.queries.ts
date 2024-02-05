@@ -1,16 +1,29 @@
+import { ImageProps } from 'next/image'
 import { groq } from 'next-sanity'
 
-const imageFields = groq`
-  _type,
-  alt,
+const imageAssetFields = groq`
   hotspot {  x, y, },
-  crop { _type},
+  crop { _type },
   ...(asset-> {
     _id,
     "lqip": metadata.lqip,
     "width": metadata.dimensions.width,
     "height": metadata.dimensions.height,
   })
+`
+const imageFields = groq`
+  _type, alt,
+  ${imageAssetFields}
+`
+
+const portableTextFields = groq`
+  ...,
+  _type == 'module.image' => {
+    _type, alt, caption,
+    image {
+      ${imageAssetFields}
+    }
+  }
 `
 const postFields = groq`
   _id,
@@ -165,8 +178,29 @@ export const indexQuery = groq`
     ${homeHeroModuleFields}
   },
   modules[] {
-    _key, _type, title, addLandingLink,
+    _key, _type, title,
+
+    _type == 'module.youtube' => {
+      "src": url,
+      autoplay,
+      loop,
+      "cover": image {
+        "alt": ^.title,
+        ${imageAssetFields}
+      }
+    },
+    _type == 'module.video' => {
+      "src": video.asset->url,
+      layout,
+      autoplay,
+      loop,
+      "cover": image {
+        "alt": ^.title,
+        ${imageAssetFields}
+      }
+    },
     _type == 'module.posts' => {
+      addLandingLink,
       variant == 'latest' =>  {
         "content": *[_type == 'post'] | order(_createdAt desc)[0..2] {
           ${postPreviewFields}
@@ -179,11 +213,13 @@ export const indexQuery = groq`
       }
     },
     _type == 'module.artists' => {
-       "content": items[]-> {
-          ${artistPreviewFields}
-       }
+       addLandingLink,
+      "content": items[]-> {
+        ${artistPreviewFields}
+      }
     },
     _type == 'module.artworks' => {
+      addLandingLink,
       variant == 'latest' =>  {
         "content": *[_type == 'artwork'] | order(_createdAt desc)[0..2] {
           ${artworkPreviewFields}
@@ -209,23 +245,6 @@ export const postCategoriesQuery = groq`
 }`
 
 export const nextPostsQuery = groq`*[_type == "post" && date < $date] | order(date desc)[0...6]`
-
-const portableTextFields = groq`
-  ...,
-  _type == 'module.image' => {
-    _type, alt, caption,
-    image {
-      hotspot {  x, y, },
-      crop { _type },
-      ...(asset-> {
-        _id,
-        "lqip": metadata.lqip,
-        "width": metadata.dimensions.width,
-        "height": metadata.dimensions.height,
-      })
-    }
-  }
-`
 
 export const postAndMoreStoriesQuery = groq`
 {
@@ -368,20 +387,4 @@ export interface PostCategory {
   _id: string
   title: string
   slug: string
-}
-
-export type ImageProps = {
-  _type: 'image'
-  _id: string
-  lqip: string
-  width: number
-  height: number
-  alt: string
-  crop: {
-    _type: string
-  }
-  hotspot: {
-    x: number
-    y: number
-  }
 }

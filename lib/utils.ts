@@ -2,23 +2,21 @@ import { SanityImageProps } from '@/components/shared/SanityImage'
 import clsx, { ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { urlForImage } from './sanity.image'
+import { MediaLayout } from '@/components/modules/types'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const getBackgroundImageWrapperHeight = (
-  format: 'portrait' | 'square' | 'vertical',
-) => {
-  switch (format) {
+export const getBackgroundImageWrapperHeight = (layout: MediaLayout) => {
+  switch (layout) {
     case 'portrait':
-      return 'pt-[150%]'
+      return 'aspect-portrait'
     case 'square':
-      return 'pt-[100%]'
-    case 'vertical':
-      return 'pt-[177%]'
+      return 'aspect-square'
+    case 'landscape':
     default:
-      return 'pt-[56.25%]'
+      return 'aspect-video'
   }
 }
 
@@ -35,14 +33,15 @@ export const getImageDimensions = (
 
 export const getImageHeight = (
   width: number = 1000,
-  format?: SanityImageProps['format'],
+  layout?: SanityImageProps['layout'],
 ) => {
-  switch (format) {
+  switch (layout) {
     case 'square':
       return width // 1:1
     case 'portrait':
       return Math.floor(width * 1.3333) // 3:4
     case 'landscape':
+    default:
       return Math.floor(width * 0.5625) // 16:9
   }
 }
@@ -52,7 +51,7 @@ interface Props {
   width: number
   height: number
   maxWidth: number
-  format?: SanityImageProps['format']
+  layout?: SanityImageProps['layout']
   crop?: SanityImageProps['image']['crop']
   hotspot?: SanityImageProps['image']['hotspot']
 }
@@ -62,7 +61,7 @@ export const parseImageProps = ({
   width: imageWidth,
   height: imageHeight,
   maxWidth,
-  format,
+  layout,
   crop,
   hotspot,
 }: Props) => {
@@ -70,18 +69,18 @@ export const parseImageProps = ({
     height: imageWidth,
     width: imageHeight,
   }
-  if (format) {
-    // if format is provided, calculate the height based on the aspect ratio
+  if (layout) {
+    // if layout is provided, calculate the height based on the aspect ratio
     const { width } = getImageDimensions(
       imageWidth,
       imageHeight,
       Math.min(maxWidth, imageWidth),
     )
-    const height = getImageHeight(width, format)
+    const height = getImageHeight(width, layout)
     dimensions.height = height
     dimensions.width = width
   } else {
-    // if no format is provided, calculate the dimensions based on maxWidth and the image's aspect ratio
+    // if no layout is provided, calculate the dimensions based on maxWidth and the image's aspect ratio
     const { width, height } = getImageDimensions(
       imageWidth,
       imageHeight,

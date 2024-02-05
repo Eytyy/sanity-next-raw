@@ -1,7 +1,7 @@
-import { ImageProps } from '@/lib/sanity.queries'
 import cn from 'classnames'
 import Link from 'next/link'
 import { SanityImage } from './shared/SanityImage'
+import { ImageProps, MediaLayout } from './modules/types'
 
 interface CoverImageProps {
   title: string
@@ -9,7 +9,7 @@ interface CoverImageProps {
   maxWidth?: number
   priority?: boolean
   sizes?: string
-  format?: 'square' | 'landscape' | 'portrait'
+  layout?: MediaLayout
   linkVariant?: 'internal' | 'external'
   slug?: string
 }
@@ -22,7 +22,7 @@ export default function CoverImage(props: CoverImageProps) {
     priority,
     linkVariant,
     sizes,
-    format,
+    layout,
     maxWidth,
   } = props
   const internalLink = linkVariant ? linkVariant === 'internal' : true
@@ -35,7 +35,7 @@ export default function CoverImage(props: CoverImageProps) {
       <SanityImage
         image={source}
         sizes={sizes ?? '100vw'}
-        format={format}
+        layout={layout}
         priority={priority}
         maxWidth={maxWidth}
       />

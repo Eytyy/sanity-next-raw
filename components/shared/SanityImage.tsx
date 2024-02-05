@@ -1,6 +1,3 @@
-import { urlForImage } from '@/lib/sanity.image'
-import { ImageProps } from '@/lib/sanity.queries'
-
 import {
   cn,
   getBackgroundImageWrapperHeight,
@@ -8,10 +5,11 @@ import {
 } from '@/lib/utils'
 import Image from 'next/image'
 import React from 'react'
+import { ImageProps, MediaLayout } from '../modules/types'
 
 export interface SanityImageProps {
   image: ImageProps
-  format?: 'portrait' | 'square' | 'landscape'
+  layout?: MediaLayout
   sizes?: string
   priority?: boolean
   maxWidth?: number
@@ -20,7 +18,7 @@ export interface SanityImageProps {
 export function SanityImage({
   image,
   sizes,
-  format,
+  layout,
   priority,
   maxWidth = 1000,
 }: SanityImageProps) {
@@ -28,11 +26,11 @@ export function SanityImage({
   const imageProps = parseImageProps({
     ...parseProps,
     maxWidth,
-    format,
+    layout,
   })
   return (
     <Image
-      className={cn('h-auto w-full object-fill', format)}
+      className={cn('h-auto w-full object-fill', layout)}
       alt={alt ?? 'untitled'}
       {...imageProps}
       sizes={sizes ?? '100vw'}
@@ -46,7 +44,7 @@ export function SanityImage({
 export function SanityImageBackground({
   image,
   sizes,
-  format,
+  layout,
   priority,
   maxWidth = 1000,
 }: SanityImageProps) {
@@ -54,13 +52,11 @@ export function SanityImageBackground({
   const { src } = parseImageProps({
     ...parseProps,
     maxWidth,
-    format,
+    layout,
   })
 
   return (
-    <div
-      className={cn('relative h-0', getBackgroundImageWrapperHeight(format))}
-    >
+    <div className={cn('relative', getBackgroundImageWrapperHeight(layout))}>
       <Image
         className="h-full w-full object-fill absolute top-0 left-0"
         layout="fill"

@@ -33,7 +33,7 @@ export default function ArtistInnerPage(props: ArtistInnerPageProps) {
               coverImage={artist.coverImage}
               title={artist.name}
               slug={artist.slug}
-              format="landscape"
+              layout="landscape"
             />
             <ContentBody content={artist.bio} />
           </article>

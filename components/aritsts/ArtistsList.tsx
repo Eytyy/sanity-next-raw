@@ -14,7 +14,7 @@ export default function ArtistsList(
           See all
         </Link>
       </h2>
-      <div className="mb-32 grid grid-cols-1 gap-y-20 md:grid-cols-3 md:gap-x-16 md:gap-y-20 lg:gap-x-20">
+      <div className="grid grid-cols-1 gap-y-20 md:grid-cols-3 md:gap-x-16 md:gap-y-20 lg:gap-x-20">
         {props.content.map((artist) => (
           <ArtistCard key={artist._id} {...artist} />
         ))}

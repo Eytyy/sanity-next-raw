@@ -1,6 +1,7 @@
 import ArtistsList from '@/components/aritsts/ArtistsList'
 import ArtworkList from '@/components/artwork/ArtworkList'
 import PostsList from '@/components/blog/PostsList'
+
 import type {
   ReferencedArtistsModuleProps,
   ReferencedArtworksModuleProps,

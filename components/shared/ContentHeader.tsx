@@ -2,14 +2,15 @@ import CoverImage from 'components/CoverImage'
 import type { InternalPost } from 'lib/sanity.queries'
 
 import PageTitle from './PageTitle'
+import { MediaLayout } from '../modules/types'
 
 export default function ContentHeader(props: {
   title: string
   coverImage: InternalPost['coverImage']
   slug: string
-  format?: 'landscape' | 'portrait' | 'square'
+  layout?: MediaLayout
 }) {
-  const { title, coverImage, slug, format } = props
+  const { title, coverImage, slug, layout } = props
   return (
     <>
       <PageTitle>{title}</PageTitle>
@@ -20,7 +21,7 @@ export default function ContentHeader(props: {
           priority
           maxWidth={2000}
           sizes="100vw"
-          format={format}
+          layout={layout}
         />
       </div>
     </>

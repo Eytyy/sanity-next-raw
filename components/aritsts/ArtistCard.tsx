@@ -13,7 +13,7 @@ export default function ArtistCard({ name, coverImage, slug }: Artist) {
           priority={false}
           maxWidth={500}
           sizes="(max-width: 500px) 100vw, 33vw"
-          format="square"
+          layout="square"
         />
       </div>
       <h3 className="text-3xl leading-snug">
