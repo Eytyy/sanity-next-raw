@@ -1,10 +1,12 @@
 import IndexPage, { IndexPageProps } from 'components/home/IndexPage'
 import PreviewIndexPage from 'components/home/PreviewIndexPage'
 import { readToken } from 'lib/sanity.api'
-import { getClient, getHome, getSettings } from 'lib/sanity.client'
-import { Post, Settings } from 'lib/sanity.queries'
+import { getHome, getSettings } from 'lib/sanity.client'
+import { Settings } from 'lib/sanity.queries'
 import { GetStaticProps } from 'next'
 import type { SharedPageProps } from 'pages/_app'
+
+import { pareseModulesImagesBlurDataURL } from '@/lib/imageBlurData'
 
 interface PageProps extends SharedPageProps {
   page: IndexPageProps['page']
@@ -35,7 +37,10 @@ export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
 
   return {
     props: {
-      page,
+      page: {
+        ...page,
+        modules: await pareseModulesImagesBlurDataURL(page.modules),
+      },
       settings,
       draftMode,
       token: token ?? '',

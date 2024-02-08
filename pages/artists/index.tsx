@@ -6,6 +6,7 @@ import type { SharedPageProps } from 'pages/_app'
 
 import ArtistsLandingPage from '@/components/aritsts/Landing'
 import PreviewArtistsLandingPage from '@/components/aritsts/PreviewLanding'
+import { pareseContentImagesBlurDataURL } from '@/lib/imageBlurData'
 
 interface PageProps extends SharedPageProps {
   settings: Settings
@@ -46,7 +47,7 @@ export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
 
   return {
     props: {
-      artists,
+      artists: await pareseContentImagesBlurDataURL(artists),
       title: 'Artists',
       settings,
       draftMode,

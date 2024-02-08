@@ -10,6 +10,12 @@ import { InternalPost, Post, Settings } from 'lib/sanity.queries'
 import { GetStaticProps } from 'next'
 import type { SharedPageProps } from 'pages/_app'
 
+import {
+  addBlurDataURLToImage,
+  pareseContentImagesBlurDataURL,
+  pareseModulesImagesBlurDataURL,
+} from '@/lib/imageBlurData'
+
 interface PageProps extends SharedPageProps {
   post: InternalPost
   morePosts: Post[]
@@ -47,8 +53,12 @@ export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
 
   return {
     props: {
-      post,
-      morePosts,
+      post: {
+        ...post,
+        content: await pareseModulesImagesBlurDataURL(post.content),
+        coverImage: await addBlurDataURLToImage(post.coverImage),
+      },
+      morePosts: await pareseContentImagesBlurDataURL(morePosts),
       settings,
       draftMode,
       token: token ?? '',

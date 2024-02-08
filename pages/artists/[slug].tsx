@@ -1,5 +1,3 @@
-import ArtistInnerPage from '@/components/aritsts/Inner'
-import PreviewArtistInnerPage from '@/components/aritsts/PreviewInner'
 import { readToken } from 'lib/sanity.api'
 import {
   getAllArtistSlugs,
@@ -9,6 +7,10 @@ import {
 import { Artist, Settings } from 'lib/sanity.queries'
 import { GetStaticProps } from 'next'
 import type { SharedPageProps } from 'pages/_app'
+
+import ArtistInnerPage from '@/components/aritsts/Inner'
+import PreviewArtistInnerPage from '@/components/aritsts/PreviewInner'
+import { addBlurDataURLToImage } from '@/lib/imageBlurData'
 
 interface PageProps extends SharedPageProps {
   artist: Artist
@@ -42,9 +44,14 @@ export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
     }
   }
 
+  const artistkWithBlurData = {
+    ...artist,
+    coverImage: await addBlurDataURLToImage(artist.coverImage),
+  }
+
   return {
     props: {
-      artist,
+      artist: artistkWithBlurData,
       settings,
       draftMode,
       token: draftMode ? readToken : '',

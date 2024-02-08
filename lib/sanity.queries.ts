@@ -1,12 +1,17 @@
-import { ImageProps } from 'next/image'
 import { groq } from 'next-sanity'
 
+import { ImageProps } from '@/components/modules/types'
+
 const imageAssetFields = groq`
-  hotspot {  x, y, },
-  crop { _type },
+  hotspot {
+    x,
+    y,
+    width,
+    height,
+   },
+  crop { _type, top, bottom, left, right},
   ...(asset-> {
     _id,
-    "lqip": metadata.lqip,
     "width": metadata.dimensions.width,
     "height": metadata.dimensions.height,
   })
@@ -102,7 +107,10 @@ const artworkPreviewFields = groq`
     ${imageFields}
   },
   title,
-  artist->,
+  artist-> {
+    name,
+    "slug": slug.current,
+  },
   date,
   "slug": slug.current,
 `

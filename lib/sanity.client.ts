@@ -6,25 +6,25 @@ import {
   useCdn,
 } from 'lib/sanity.api'
 import {
-  type Post,
-  type Settings,
   Artist,
+  artistBySlugQuery,
+  artistSlugsQuery,
   artistsQuery,
+  Artwork,
+  artworkBySlugQuery,
+  artworkQuery,
+  artworkSlugsQuery,
   indexQuery,
   InternalPost,
+  type Post,
   postAndMoreStoriesQuery,
   postBySlugQuery,
   postCategoriesQuery,
   PostCategory,
   postPreviewFields,
   postSlugsQuery,
+  type Settings,
   settingsQuery,
-  Artwork,
-  artworkQuery,
-  artistBySlugQuery,
-  artworkBySlugQuery,
-  artworkSlugsQuery,
-  artistSlugsQuery,
 } from 'lib/sanity.queries'
 import { createClient, type SanityClient } from 'next-sanity'
 
@@ -62,7 +62,6 @@ export async function getSettings(
   readToken: string | undefined,
 ): Promise<Settings> {
   const client = getClient(readToken ? { token: readToken } : undefined)
-
   return (await client.fetch(settingsQuery)) || {}
 }
 
@@ -85,6 +84,7 @@ export async function getBlog(
   const client = getClient(readToken ? { token: readToken } : undefined)
   const subset = `[${offset}...${offset + postsPerPage}]`
   const hasFilters = filters.length > 0
+  let data
   if (hasFilters) {
     const filterString = BuildBlogQueryFilterString(filters)
     const q = `*[_type == "post" && ${filterString}] | order(date desc) ${subset} { ${postPreviewFields} }`

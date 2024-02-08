@@ -2,11 +2,11 @@ import SectionSeparator from 'components/SectionSeparator'
 import type { InternalPost, Post, Settings } from 'lib/sanity.queries'
 import { notFound } from 'next/navigation'
 
+import HeadInner from '../shared/HeadInner'
 import PostBody from './PostBody'
 import PostHeader from './PostHeader'
-import PostTitle from './PostTitle'
 import PostsList from './PostsList'
-import HeadInner from '../shared/HeadInner'
+import PostTitle from './PostTitle'
 
 export interface PostPageProps {
   preview?: boolean

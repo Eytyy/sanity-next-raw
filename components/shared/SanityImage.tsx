@@ -1,10 +1,12 @@
+import Image from 'next/image'
+import React from 'react'
+
 import {
   cn,
   getBackgroundImageWrapperHeight,
   parseImageProps,
 } from '@/lib/utils'
-import Image from 'next/image'
-import React from 'react'
+
 import { ImageProps, MediaLayout } from '../modules/types'
 
 export interface SanityImageProps {
@@ -22,21 +24,24 @@ export function SanityImage({
   priority,
   maxWidth = 1000,
 }: SanityImageProps) {
-  const { alt, lqip, ...parseProps } = image
-  const imageProps = parseImageProps({
+  const { alt, blurDataURL, ...parseProps } = image
+  const { src, width, height, blurSrc } = parseImageProps({
     ...parseProps,
     maxWidth,
     layout,
   })
+
   return (
     <Image
       className={cn('h-auto w-full object-fill', layout)}
       alt={alt ?? 'untitled'}
-      {...imageProps}
+      src={src}
+      width={width}
+      height={height}
       sizes={sizes ?? '100vw'}
       priority={priority}
-      blurDataURL={lqip}
-      placeholder="blur"
+      placeholder={blurDataURL ? 'blur' : 'empty'}
+      blurDataURL={blurDataURL ? blurDataURL : undefined}
     />
   )
 }
@@ -48,7 +53,7 @@ export function SanityImageBackground({
   priority,
   maxWidth = 1000,
 }: SanityImageProps) {
-  const { alt, lqip, ...parseProps } = image
+  const { alt, ...parseProps } = image
   const { src } = parseImageProps({
     ...parseProps,
     maxWidth,
@@ -59,13 +64,11 @@ export function SanityImageBackground({
     <div className={cn('relative', getBackgroundImageWrapperHeight(layout))}>
       <Image
         className="h-full w-full object-fill absolute top-0 left-0"
-        layout="fill"
+        fill={true}
         alt={alt ?? 'untitled'}
         src={src}
         sizes={sizes ?? '100vw'}
         priority={priority}
-        blurDataURL={lqip}
-        placeholder="blur"
       />
     </div>
   )

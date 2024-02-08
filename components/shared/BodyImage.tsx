@@ -1,5 +1,8 @@
-import { cn, parseImageProps } from '@/lib/utils'
 import Image from 'next/image'
+
+import { cn, parseImageProps } from '@/lib/utils'
+
+import { ImageProps } from '../modules/types'
 
 export default function BodyImage({
   image,
@@ -8,22 +11,11 @@ export default function BodyImage({
 }: {
   alt: string
   caption?: string
-  image: {
-    hotspot?: { x: number; y: number }
-    crop?: any
-    height: number
-    width: number
-    _id: string
-    lqip: string
-  }
+  image: ImageProps
 }) {
-  const { _id, hotspot, crop, width, height, lqip } = image
+  const { blurDataURL, ...parseProps } = image
   const imageProps = parseImageProps({
-    _id,
-    width,
-    height,
-    hotspot,
-    crop,
+    ...parseProps,
     maxWidth: 1000,
   })
 
@@ -34,7 +26,7 @@ export default function BodyImage({
         alt={alt ?? 'untitled'}
         {...imageProps}
         sizes={'100vw'}
-        blurDataURL={lqip}
+        blurDataURL={blurDataURL}
         placeholder="blur"
       />
       {caption && <figcaption>{caption}</figcaption>}

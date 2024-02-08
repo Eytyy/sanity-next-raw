@@ -12,17 +12,13 @@ import {
   type PortableTextReactComponents,
 } from '@portabletext/react'
 
-import styles from './PostBody.module.css'
 import BodyImage from '../shared/BodyImage'
+import styles from './PostBody.module.css'
 
 const myPortableTextComponents: Partial<PortableTextReactComponents> = {
   types: {
-    image: ({ value }) => {
-      return <BodyImage {...value} />
-    },
-    'module.image': ({ value }) => {
-      return <BodyImage {...value} />
-    },
+    image: ({ value }) => <BodyImage {...value} />,
+    'module.image': ({ value }) => <BodyImage {...value} />,
   },
 }
 

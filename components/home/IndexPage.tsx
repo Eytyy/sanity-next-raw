@@ -18,7 +18,6 @@ export interface IndexPageProps {
 export default function IndexPage(props: IndexPageProps) {
   const { page, settings } = props
   const { hero, modules } = page
-  console.log(modules)
   return (
     <>
       <HeadLanding settings={settings} />

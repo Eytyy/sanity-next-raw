@@ -1,7 +1,8 @@
 import cn from 'classnames'
 import Link from 'next/link'
-import { SanityImage } from './shared/SanityImage'
+
 import { ImageProps, MediaLayout } from './modules/types'
+import { SanityImage } from './shared/SanityImage'
 
 interface CoverImageProps {
   title: string

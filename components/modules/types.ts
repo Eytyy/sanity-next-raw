@@ -32,16 +32,21 @@ export type ReferencedArtworksModuleProps = {
 export type ImageProps = {
   _type: 'image'
   _id: string
-  lqip: string
   width: number
   height: number
   alt: string
+  blurDataURL: string
   crop: {
-    _type: string
+    top: number
+    bottom: number
+    left: number
+    right: number
   }
   hotspot: {
     x: number
     y: number
+    width: number
+    height: number
   }
 }
 

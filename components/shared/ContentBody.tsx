@@ -2,6 +2,7 @@ import {
   PortableText,
   type PortableTextReactComponents,
 } from '@portabletext/react'
+
 import { SanityImage } from './SanityImage'
 
 const myPortableTextComponents: Partial<PortableTextReactComponents> = {

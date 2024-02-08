@@ -10,8 +10,7 @@ export default function ArtworkCard({ title, coverImage, slug }: Artwork) {
           slug={`/artwork/${slug}`}
           title={title}
           image={coverImage}
-          priority={false}
-          maxWidth={500}
+          maxWidth={1000}
           sizes="(max-width: 500px) 100vw, 33vw"
         />
       </div>

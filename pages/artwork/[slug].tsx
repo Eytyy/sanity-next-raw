@@ -1,16 +1,16 @@
-import ArtworkInnerPage from '@/components/artwork/Inner'
-import PreviewArtworkInnerPage from '@/components/artwork/PreviewInner'
 import { readToken } from 'lib/sanity.api'
 import {
   getAllArtworkSlugs,
-  getAllPostsSlugs,
   getArtworkBySlug,
-  getClient,
   getSettings,
 } from 'lib/sanity.client'
 import { Artwork, Settings } from 'lib/sanity.queries'
 import { GetStaticProps } from 'next'
 import type { SharedPageProps } from 'pages/_app'
+
+import ArtworkInnerPage from '@/components/artwork/Inner'
+import PreviewArtworkInnerPage from '@/components/artwork/PreviewInner'
+import { addBlurDataURLToImage } from '@/lib/imageBlurData'
 
 interface PageProps extends SharedPageProps {
   artwork: Artwork
@@ -33,7 +33,6 @@ export default function ArtworkSlugRoute(props: PageProps) {
 
 export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
   const { draftMode = false, params = {} } = ctx
-  const client = getClient(draftMode ? { token: readToken } : undefined)
 
   const [settings, artwork] = await Promise.all([
     getSettings(readToken),
@@ -48,7 +47,10 @@ export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
 
   return {
     props: {
-      artwork,
+      artwork: {
+        ...artwork,
+        coverImage: await addBlurDataURLToImage(artwork.coverImage),
+      },
       settings,
       draftMode,
       token: draftMode ? readToken : '',

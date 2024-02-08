@@ -10,6 +10,7 @@ import type { SharedPageProps } from 'pages/_app'
 import BlogPage from '@/components/blog/BlogPage'
 import PreviewBlogPage from '@/components/blog/PreviewBlogPage'
 import { ParseFiltersValues } from '@/lib/helpers'
+import { pareseContentImagesBlurDataURL } from '@/lib/imageBlurData'
 import {
   type Artist,
   type Post,
@@ -69,7 +70,7 @@ export const getServerSideProps = async (ctx) => {
 
   return {
     props: {
-      posts,
+      posts: await pareseContentImagesBlurDataURL(posts),
       categories,
       artists,
       settings,
