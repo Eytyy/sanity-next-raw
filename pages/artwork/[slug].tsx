@@ -10,6 +10,7 @@ import type { SharedPageProps } from 'pages/_app'
 
 import ArtworkInnerPage from '@/components/artwork/Inner'
 import PreviewArtworkInnerPage from '@/components/artwork/PreviewInner'
+import InnerLayout from '@/components/shared/InnerLayout'
 import { addBlurDataURLToImage } from '@/lib/imageBlurData'
 
 interface PageProps extends SharedPageProps {
@@ -66,4 +67,8 @@ export const getStaticPaths = async () => {
     paths: slugs?.map(({ slug }) => `/artwork/${slug}`) || [],
     fallback: 'blocking',
   }
+}
+
+ArtworkSlugRoute.getLayout = function getLayout(page: React.ReactElement) {
+  return <InnerLayout {...page.props}>{page}</InnerLayout>
 }

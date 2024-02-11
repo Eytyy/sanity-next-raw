@@ -1,4 +1,5 @@
 import AlertBanner from 'components/AlertBanner'
+import { useRouter } from 'next/router'
 import React, { PropsWithChildren } from 'react'
 
 import { Settings } from '@/lib/sanity.queries'
@@ -21,13 +22,17 @@ export default function Layout({
   settings,
   title,
 }: PropsWithChildren<LayoutProps>) {
+  const router = useRouter()
+  const { asPath } = router
+  const isHome = asPath === '/'
+  const level = isHome ? 1 : 2
   return (
     <RQProvider>
       <Container>
         <Header
           title={title || settings.title}
           description={settings.description}
-          level={1}
+          level={level}
         />
         <div className="min-h-screen">
           <AlertBanner preview={preview} loading={loading} />

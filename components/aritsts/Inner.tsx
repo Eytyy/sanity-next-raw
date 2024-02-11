@@ -3,8 +3,8 @@ import { notFound } from 'next/navigation'
 
 import ContentBody from '../shared/ContentBody'
 import ContentHeader from '../shared/ContentHeader'
-import PageTitle from '../shared/PageTitle'
 import HeadInner from '../shared/HeadInner'
+import PageTitle from '../shared/PageTitle'
 
 export interface ArtistInnerPageProps {
   preview?: boolean

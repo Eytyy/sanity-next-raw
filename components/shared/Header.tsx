@@ -15,7 +15,7 @@ export default function Header({
   switch (level) {
     case 1:
       return (
-        <header className="mb-10 mt-16 md:mb-12 sticky top-0 z-50">
+        <header className="mb-10 mt-16 md:mb-12">
           <h1 className="text-6xl font-bold leading-tight tracking-tighter md:pr-8 md:text-8xl">
             {title}
           </h1>
@@ -30,12 +30,13 @@ export default function Header({
 
     case 2:
       return (
-        <header>
-          <h2 className="mb-20 mt-8 text-2xl font-bold leading-tight tracking-tight md:text-4xl md:tracking-tighter">
+        <header className="mb-10 mt-16 md:mb-12 flex justify-between  items-baseline">
+          <h2 className="text-2xl font-bold leading-tight tracking-tight md:text-4xl md:tracking-tighter">
             <Link href="/" className="hover:underline">
               {title}
             </Link>
           </h2>
+          <Navigation />
         </header>
       )
 

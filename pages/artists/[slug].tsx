@@ -10,6 +10,7 @@ import type { SharedPageProps } from 'pages/_app'
 
 import ArtistInnerPage from '@/components/aritsts/Inner'
 import PreviewArtistInnerPage from '@/components/aritsts/PreviewInner'
+import InnerLayout from '@/components/shared/InnerLayout'
 import { addBlurDataURLToImage } from '@/lib/imageBlurData'
 
 interface PageProps extends SharedPageProps {
@@ -22,12 +23,12 @@ interface Query {
 }
 
 export default function ArtworkSlugRoute(props: PageProps) {
-  const { artist, settings, draftMode } = props
+  const { artist, draftMode } = props
 
   if (draftMode) {
-    return <PreviewArtistInnerPage artist={artist} settings={settings} />
+    return <PreviewArtistInnerPage artist={artist} />
   }
-  return <ArtistInnerPage artist={artist} settings={settings} />
+  return <ArtistInnerPage artist={artist} />
 }
 
 export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
@@ -66,4 +67,8 @@ export const getStaticPaths = async () => {
     paths: slugs?.map(({ slug }) => `/artists/${slug}`) || [],
     fallback: 'blocking',
   }
+}
+
+ArtworkSlugRoute.getLayout = function getLayout(page: React.ReactElement) {
+  return <InnerLayout {...page.props}>{page}</InnerLayout>
 }

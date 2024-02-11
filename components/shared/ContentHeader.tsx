@@ -1,16 +1,17 @@
 import CoverImage from 'components/CoverImage'
 import type { InternalPost } from 'lib/sanity.queries'
 
-import PageTitle from './PageTitle'
 import { MediaLayout } from '../modules/types'
+import PageTitle from './PageTitle'
 
 export default function ContentHeader(props: {
   title: string
   coverImage: InternalPost['coverImage']
   slug: string
   layout?: MediaLayout
+  background?: boolean
 }) {
-  const { title, coverImage, slug, layout } = props
+  const { title, coverImage, layout } = props
   return (
     <>
       <PageTitle>{title}</PageTitle>

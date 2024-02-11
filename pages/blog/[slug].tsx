@@ -10,6 +10,7 @@ import { InternalPost, Post, Settings } from 'lib/sanity.queries'
 import { GetStaticProps } from 'next'
 import type { SharedPageProps } from 'pages/_app'
 
+import InnerLayout from '@/components/shared/InnerLayout'
 import {
   addBlurDataURLToImage,
   pareseContentImagesBlurDataURL,
@@ -26,8 +27,8 @@ interface Query {
   [key: string]: string
 }
 
-export default function ProjectSlugRoute(props: PageProps) {
-  const { settings, post, morePosts, draftMode } = props
+export default function BlogSlugRoute(props: PageProps) {
+  const { post, morePosts, draftMode } = props
 
   if (draftMode) {
     return <PreviewPostPage post={post} morePosts={morePosts} />
@@ -72,4 +73,8 @@ export const getStaticPaths = async () => {
     paths: slugs?.map(({ slug }) => `/blog/${slug}`) || [],
     fallback: 'blocking',
   }
+}
+
+BlogSlugRoute.getLayout = function getLayout(page: React.ReactElement) {
+  return <InnerLayout {...page.props}>{page}</InnerLayout>
 }

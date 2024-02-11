@@ -108,11 +108,13 @@ export default function YoutubeVideo({
         onPause={pauseVideo}
         onReady={(e) => setPlayer(e.target)}
       />
-      <VideoPorgressBar
-        duration={player ? player.getDuration() : 0}
-        progress={progress}
-        onSeek={onSeek}
-      />
+      {playing && (
+        <VideoPorgressBar
+          duration={player ? player.getDuration() : 0}
+          progress={progress}
+          onSeek={onSeek}
+        />
+      )}
       {cover && !playing && (
         <VideoPoster
           sizes="(max-width: 480px) 100vw, 33vw"

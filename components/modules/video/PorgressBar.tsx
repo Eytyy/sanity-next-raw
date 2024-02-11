@@ -20,7 +20,7 @@ export default function VideoPorgressBar({
   const progressBarWidth = `${progress}%`
   return (
     <div
-      className="progress-bar-container absolute bottom-0 left-0 w-full h-1 cursor-pointer z-30"
+      className="progress-bar-container absolute bottom-0 left-0 w-full h-1 cursor-pointer z-30 hover:h-2 transition-all duration-200 ease-in-out bg-white/50"
       onClick={seek}
       ref={progressBarRef}
     >

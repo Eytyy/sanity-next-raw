@@ -15,6 +15,7 @@ export interface SanityImageProps {
   sizes?: string
   priority?: boolean
   maxWidth?: number
+  className?: string
 }
 
 export function SanityImage({
@@ -23,9 +24,10 @@ export function SanityImage({
   layout,
   priority,
   maxWidth = 1000,
+  className,
 }: SanityImageProps) {
   const { alt, blurDataURL, ...parseProps } = image
-  const { src, width, height, blurSrc } = parseImageProps({
+  const { src, width, height } = parseImageProps({
     ...parseProps,
     maxWidth,
     layout,
@@ -33,7 +35,7 @@ export function SanityImage({
 
   return (
     <Image
-      className={cn('h-auto w-full object-fill', layout)}
+      className={cn('h-auto w-full object-fill', layout, className)}
       alt={alt ?? 'untitled'}
       src={src}
       width={width}
@@ -52,8 +54,9 @@ export function SanityImageBackground({
   layout,
   priority,
   maxWidth = 1000,
+  className,
 }: SanityImageProps) {
-  const { alt, ...parseProps } = image
+  const { alt, blurDataURL, ...parseProps } = image
   const { src } = parseImageProps({
     ...parseProps,
     maxWidth,
@@ -63,12 +66,16 @@ export function SanityImageBackground({
   return (
     <div className={cn('relative', getBackgroundImageWrapperHeight(layout))}>
       <Image
-        className="h-full w-full object-fill absolute top-0 left-0"
+        className={
+          (cn('h-full w-full object-fill absolute top-0 left-0'), className)
+        }
         fill={true}
         alt={alt ?? 'untitled'}
         src={src}
         sizes={sizes ?? '100vw'}
         priority={priority}
+        placeholder={blurDataURL ? 'blur' : 'empty'}
+        blurDataURL={blurDataURL ? blurDataURL : undefined}
       />
     </div>
   )

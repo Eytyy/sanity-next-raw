@@ -1,10 +1,10 @@
 import type { Artwork, Settings } from 'lib/sanity.queries'
 import { notFound } from 'next/navigation'
 
-import PageTitle from '../shared/PageTitle'
-
 import ContentHeader from '../shared/ContentHeader'
 import HeadInner from '../shared/HeadInner'
+import PageTitle from '../shared/PageTitle'
+import ArtworkHeader from './ArtworkHeader'
 
 export interface ArtworkInnerPageProps {
   preview?: boolean
@@ -34,8 +34,8 @@ export default function ArtworkInnerPage(props: ArtworkInnerPageProps) {
       ) : (
         <>
           <article>
-            <ContentHeader
-              coverImage={artwork.coverImage}
+            <ArtworkHeader
+              mainImage={artwork.coverImage}
               title={artwork.title}
               slug={artwork.slug}
             />
