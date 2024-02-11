@@ -1,8 +1,8 @@
 import type { Artist, Settings } from 'lib/sanity.queries'
 import React from 'react'
 
-import ArtistCard from './ArtistCard'
 import HeadLanding from '../shared/HeadLanding'
+import ArtistCard from './ArtistCard'
 
 export interface ArtistsLandingPageProps {
   preview?: boolean

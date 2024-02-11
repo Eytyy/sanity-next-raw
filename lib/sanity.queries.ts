@@ -426,9 +426,9 @@ export interface Artist {
 }
 
 export interface Settings {
-  title: string
-  description: any[]
-  ogImage: any
+  title?: string
+  description?: any[]
+  ogImage?: any
 }
 
 export interface PostCategory {

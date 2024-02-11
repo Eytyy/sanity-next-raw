@@ -19,13 +19,14 @@ export default function Layout({
   preview,
   loading,
   children,
-  settings,
+  settings = {},
   title,
 }: PropsWithChildren<LayoutProps>) {
   const router = useRouter()
   const { asPath } = router
   const isHome = asPath === '/'
   const level = isHome ? 1 : 2
+
   return (
     <RQProvider>
       <Container>

@@ -78,7 +78,7 @@ export default function BlogPage(props: BlogPageProps) {
 
   return (
     <>
-      {/* <HeadLanding settings={settings} title={title} /> */}
+      <HeadLanding settings={settings} title={title} />
       <section>
         <header className="sticky top-8 mb-10 text-6xl font-bold leading-tight tracking-tighter md:text-7xl z-50">
           <div className="flex justify-between flex-wrap">

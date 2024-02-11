@@ -1,7 +1,7 @@
 import type { Artwork, Settings } from 'lib/sanity.queries'
 
-import ArtworkCard from './ArtworkCard'
 import HeadLanding from '../shared/HeadLanding'
+import ArtworkCard from './ArtworkCard'
 
 export interface ArtworkLandingPageProps {
   preview?: boolean

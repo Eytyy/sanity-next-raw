@@ -1,8 +1,10 @@
 import { toPlainText } from '@portabletext/react'
 import { Settings } from 'lib/sanity.queries'
 import Head from 'next/head'
-import Meta from './Meta'
+
 import { urlForImage } from '@/lib/sanity.image'
+
+import Meta from './Meta'
 
 export interface HeadLandingProps {
   settings: Settings

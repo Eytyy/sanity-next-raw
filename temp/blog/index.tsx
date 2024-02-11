@@ -28,7 +28,6 @@ interface PageProps extends SharedPageProps {
 
 export default function Page(props: PageProps) {
   const { title, posts, settings, categories, artists, draftMode } = props
-  console.log(settings)
   if (draftMode) {
     return (
       <PreviewBlogPage

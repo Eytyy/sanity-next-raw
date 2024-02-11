@@ -1,8 +1,8 @@
 import {
-  type Settings,
-  settingsQuery,
   Artwork,
   artworkQuery,
+  type Settings,
+  settingsQuery,
 } from 'lib/sanity.queries'
 import { useLiveQuery } from 'next-sanity/preview'
 

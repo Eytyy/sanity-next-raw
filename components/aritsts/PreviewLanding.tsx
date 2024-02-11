@@ -25,7 +25,7 @@ export default function PreviewArtistsLandingPage(
       preview
       loading={loadingArtists || loadingSettings}
       settings={settings || {}}
-      artists={props.artists}
+      artists={artists}
       title={props.title}
     />
   )

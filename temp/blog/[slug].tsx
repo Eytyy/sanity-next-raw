@@ -20,7 +20,7 @@ import {
 interface PageProps extends SharedPageProps {
   post: InternalPost
   morePosts: Post[]
-  settings?: Settings
+  settings: Settings
 }
 
 interface Query {
