@@ -1,5 +1,5 @@
-import { BookIcon } from '@sanity/icons'
 import { format, parseISO } from 'date-fns'
+import { MdTextSnippet } from 'react-icons/md'
 import { defineField, defineType } from 'sanity'
 
 import { defineImageField } from '../utils'
@@ -10,7 +10,7 @@ import postCategoryType from './postCategory'
 export default defineType({
   name: 'post',
   title: 'Post',
-  icon: BookIcon,
+  icon: MdTextSnippet,
   type: 'document',
   groups: [
     { title: 'Content', name: 'content', default: true },

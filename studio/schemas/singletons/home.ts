@@ -10,11 +10,11 @@ export default defineField({
   icon: HomeIcon,
   fields: [
     // Hero
-    // defineField({
-    //   name: 'hero',
-    //   title: 'Hero',
-    //   type: 'hero.home',
-    // }),
+    defineField({
+      name: 'hero',
+      title: 'Hero',
+      type: 'hero.home',
+    }),
     // Modules
     defineField({
       name: 'modules',

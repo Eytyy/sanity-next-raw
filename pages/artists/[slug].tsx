@@ -10,7 +10,7 @@ import type { SharedPageProps } from 'pages/_app'
 
 import ArtistInnerPage from '@/components/aritsts/Inner'
 import PreviewArtistInnerPage from '@/components/aritsts/PreviewInner'
-import InnerLayout from '@/components/shared/InnerLayout'
+import InnerLayout from '@/components/layout/InnerLayout'
 import { addBlurDataURLToImage } from '@/lib/imageBlurData'
 
 interface PageProps extends SharedPageProps {

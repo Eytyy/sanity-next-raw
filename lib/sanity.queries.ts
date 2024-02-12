@@ -1,6 +1,8 @@
 import { groq } from 'next-sanity'
 
 import { ImageProps } from '@/components/modules/types'
+import { ExternalLinkProps } from '@/components/nav/ExternalLink'
+import { InternalLinkProps } from '@/components/nav/InternalLink'
 
 const imageAssetFields = groq`
   hotspot {
@@ -178,6 +180,18 @@ const homeHeroModuleFields = groq`
 
 export const settingsQuery = groq`*[_type == "settings"][0] {
   ...,
+  menu[] {
+    title, _key, _type,
+    _type == 'linkInternal' => {
+      "href": reference->.slug.current
+    },
+    _type == 'linkExternal' => {
+      "href": url
+    },
+    _type == 'linkContent' => {
+      "href": reference->.slug.current
+    }
+  },
   'artworkCount': count(*[_type == 'artwork']),
   'postsCount': count(*[_type == 'post']),
   'artistsCount': count(*[_type == 'artist']),
@@ -429,6 +443,7 @@ export interface Settings {
   title?: string
   description?: any[]
   ogImage?: any
+  menu?: (ExternalLinkProps | InternalLinkProps)[]
 }
 
 export interface PostCategory {

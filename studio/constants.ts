@@ -6,6 +6,14 @@ export const LOCKED_DOCUMENT_TYPES = ['settings', 'home', 'media.tag']
 // References to include in 'internal' links
 export const PAGE_REFERENCES = [
   { type: 'home' },
+  { type: 'page' },
+  { type: 'contact' },
+  { type: 'blog' },
+  { type: 'artworkPage' },
+  { type: 'artistsPage' },
+]
+
+export const CONTENT_REFERENCES = [
   { type: 'post' },
   { type: 'artwork' },
   { type: 'artist' },

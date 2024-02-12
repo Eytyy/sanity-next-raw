@@ -7,6 +7,17 @@ export default defineType({
   title: 'Settings',
   type: 'document',
   icon: CogIcon,
+  groups: [
+    {
+      title: 'Info',
+      name: 'info',
+      default: true,
+    },
+    {
+      title: 'Menu',
+      name: 'menu',
+    },
+  ],
   preview: {
     prepare: () => ({
       title: 'Settings',
@@ -16,12 +27,24 @@ export default defineType({
   // liveEdit: true,
   fields: [
     defineField({
+      title: 'Menu',
+      name: 'menu',
+      type: 'array',
+      of: [
+        { type: 'linkExternal' },
+        { type: 'linkContent' },
+        { type: 'linkInternal', title: 'Page Link' },
+      ],
+      group: 'menu',
+    }),
+    defineField({
       name: 'title',
-      description: 'This field is the title of your blog.',
+      description: 'This field is the title of your website.',
       title: 'Title',
       type: 'string',
       initialValue: demo.title,
       validation: (rule) => rule.required(),
+      group: 'info',
     }),
     defineField({
       name: 'description',
@@ -56,6 +79,7 @@ export default defineType({
         }),
       ],
       validation: (rule) => rule.max(155).required(),
+      group: 'info',
     }),
     defineField({
       name: 'ogImage',
@@ -65,6 +89,7 @@ export default defineType({
       type: 'image',
       options: { hotspot: true },
       validation: (rule) => rule.required(),
+      group: 'info',
     }),
   ],
 })

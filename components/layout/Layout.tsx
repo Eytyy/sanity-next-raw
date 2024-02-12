@@ -2,11 +2,11 @@ import AlertBanner from 'components/AlertBanner'
 import { useRouter } from 'next/router'
 import React, { PropsWithChildren } from 'react'
 
+import Container from '@/components/shared/Container'
+import Header from '@/components/shared/Header'
 import { Settings } from '@/lib/sanity.queries'
 
 import { RQProvider } from '../Providers'
-import Container from './Container'
-import Header from './Header'
 
 interface LayoutProps {
   preview: boolean
@@ -26,11 +26,11 @@ export default function Layout({
   const { asPath } = router
   const isHome = asPath === '/'
   const level = isHome ? 1 : 2
-
   return (
     <RQProvider>
       <Container>
         <Header
+          menu={settings.menu}
           title={title || settings.title}
           description={settings.description}
           level={level}

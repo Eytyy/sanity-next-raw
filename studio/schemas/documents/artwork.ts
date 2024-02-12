@@ -1,4 +1,4 @@
-import { RocketIcon } from '@sanity/icons'
+import { MdBrush } from 'react-icons/md'
 import { defineField, defineType } from 'sanity'
 
 import { defineImageField, defineSlugField } from '../utils'
@@ -6,7 +6,7 @@ import { defineImageField, defineSlugField } from '../utils'
 export default defineType({
   name: 'artwork',
   title: 'Artwork',
-  icon: RocketIcon,
+  icon: MdBrush,
   type: 'document',
   fields: [
     defineImageField({

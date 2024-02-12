@@ -1,10 +1,9 @@
 import AlertBanner from 'components/AlertBanner'
 import React, { PropsWithChildren } from 'react'
 
+import Container from '@/components/shared/Container'
+import Header from '@/components/shared/Header'
 import { Settings } from '@/lib/sanity.queries'
-
-import Container from './Container'
-import Header from './Header'
 
 interface LayoutProps {
   preview: boolean
@@ -23,6 +22,7 @@ export default function InnerLayout({
   return (
     <Container>
       <Header
+        menu={settings.menu}
         title={title || settings.title}
         description={settings.description}
         level={2}

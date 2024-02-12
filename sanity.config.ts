@@ -14,8 +14,7 @@ import { locate } from 'studio/plugins/locate'
 import { singletonPlugin } from 'studio/plugins/singelton'
 
 import { schema } from './studio/schemas'
-import homeType from './studio/schemas/singletons/home'
-import settingsType from './studio/schemas/singletons/settings'
+import singletons from './studio/schemas/singletons'
 import { structure } from './studio/structure'
 
 const title =
@@ -41,7 +40,9 @@ export default defineConfig({
     }),
     media(),
     // Configures the global "new document" button, and document actions, to suit the document singleton
-    singletonPlugin({ types: [homeType.name, settingsType.name] }),
+    singletonPlugin({
+      types: [...singletons.map((singleton) => singleton.name), 'media.tag'],
+    }),
     // Add an image asset source for Unsplash
     unsplashImageAsset(),
     visionTool({ defaultApiVersion: apiVersion }),

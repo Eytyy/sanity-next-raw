@@ -1,4 +1,4 @@
-import { UserIcon } from '@sanity/icons'
+import { MdOutlinePerson } from 'react-icons/md'
 import { defineField, defineType } from 'sanity'
 
 import { defineImageField, defineSlugField } from '../utils'
@@ -6,7 +6,7 @@ import { defineImageField, defineSlugField } from '../utils'
 export default defineType({
   name: 'artist',
   title: 'Artist',
-  icon: UserIcon,
+  icon: MdOutlinePerson,
   type: 'document',
   groups: [
     { title: 'Content', name: 'content', default: true },

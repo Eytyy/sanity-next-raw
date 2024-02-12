@@ -63,7 +63,7 @@ export const getServerSideProps = async (ctx) => {
   const [settings, posts = [], categories = [], artists = []] =
     await Promise.all([
       getSettings(token),
-      getBlog(token, parsedFilters, offset, postsPerPage),
+      getBlog(parsedFilters, offset, postsPerPage, token),
       getPostsCategories(token),
       getArtists(token),
     ])

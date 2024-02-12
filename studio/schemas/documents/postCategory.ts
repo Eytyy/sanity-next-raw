@@ -1,11 +1,11 @@
-import { ColorWheelIcon } from '@sanity/icons'
+import { MdTag } from 'react-icons/md'
 import { defineField, defineType } from 'sanity'
 
 import { defineSlugField } from '../utils'
 export default defineType({
   name: 'postCategory',
   title: 'Post Category',
-  icon: ColorWheelIcon,
+  icon: MdTag,
   type: 'document',
   fields: [
     defineField({

@@ -1,4 +1,4 @@
-import { UserIcon } from '@sanity/icons'
+import { MdPerson } from 'react-icons/md'
 import { defineField, defineType } from 'sanity'
 
 import { defineImageField } from '../utils'
@@ -6,7 +6,7 @@ import { defineImageField } from '../utils'
 export default defineType({
   name: 'author',
   title: 'Author',
-  icon: UserIcon,
+  icon: MdPerson,
   type: 'document',
   fields: [
     defineField({

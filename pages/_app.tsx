@@ -4,11 +4,11 @@ import { NextPage } from 'next'
 import { AppProps } from 'next/app'
 import { lazy, Suspense } from 'react'
 
-import Layout from '@/components/shared/Layout'
+import Layout from '@/components/layout/Layout'
 
 export interface SharedPageProps {
   draftMode: boolean
-  token: string
+  token?: string
   title?: string
 }
 

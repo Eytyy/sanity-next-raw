@@ -58,33 +58,30 @@ export function getClient(preview?: { token: string }): SanityClient {
 
 export const getSanityImageConfig = () => getClient()
 
-export async function getSettings(
-  readToken: string | undefined,
-): Promise<Settings> {
+export async function getSettings(readToken?: string): Promise<Settings> {
   const client = getClient(readToken ? { token: readToken } : undefined)
   return (await client.fetch(settingsQuery)) || {}
 }
 
 export async function getHome(
-  readToken: string | undefined,
+  readToken?: string,
 ): Promise<IndexPageProps['page']> {
   const client = getClient(readToken ? { token: readToken } : undefined)
   return await client.fetch(indexQuery)
 }
 
 export async function getBlog(
-  readToken: string | undefined,
   filters: {
     name: string
     values: string[]
   }[],
   offset: number,
   postsPerPage: number,
+  readToken?: string,
 ): Promise<Post[]> {
   const client = getClient(readToken ? { token: readToken } : undefined)
   const subset = `[${offset}...${offset + postsPerPage}]`
   const hasFilters = filters.length > 0
-  let data
   if (hasFilters) {
     const filterString = BuildBlogQueryFilterString(filters)
     const q = `*[_type == "post" && ${filterString}] | order(date desc) ${subset} { ${postPreviewFields} }`
@@ -119,23 +116,19 @@ export async function getFilteredBlog(
 }
 
 export async function getPostsCategories(
-  readToken: string | undefined,
+  readToken?: string,
 ): Promise<PostCategory[]> {
   const client = getClient(readToken ? { token: readToken } : undefined)
 
   return (await client.fetch(postCategoriesQuery)) || []
 }
 
-export async function getArtists(
-  readToken: string | undefined,
-): Promise<Artist[]> {
+export async function getArtists(readToken?: string): Promise<Artist[]> {
   const client = getClient(readToken ? { token: readToken } : undefined)
   return (await client.fetch(artistsQuery)) || []
 }
 
-export async function getArtworks(
-  readToken: string | undefined,
-): Promise<Artwork[]> {
+export async function getArtworks(readToken?: string): Promise<Artwork[]> {
   const client = getClient(readToken ? { token: readToken } : undefined)
   return (await client.fetch(artworkQuery)) || []
 }
@@ -149,16 +142,16 @@ export async function getAllPostsSlugs(): Promise<
 }
 
 export async function getPostBySlug(
-  readToken: string | undefined,
   slug: string,
+  readToken?: string,
 ): Promise<Post> {
   const client = getClient(readToken ? { token: readToken } : undefined)
   return (await client.fetch(postBySlugQuery, { slug })) || ({} as any)
 }
 
 export async function getPostAndMoreStories(
-  readToken: string | undefined,
   slug: string,
+  readToken?: string,
 ): Promise<{ post: InternalPost; morePosts: Post[] }> {
   const client = getClient(readToken ? { token: readToken } : undefined)
   return await client.fetch(postAndMoreStoriesQuery, { slug })
@@ -171,8 +164,8 @@ export async function getAllArtistSlugs(): Promise<Pick<Artist, 'slug'>[]> {
 }
 
 export async function getArtistBySlug(
-  readToken: string | undefined,
   slug: string,
+  readToken?: string,
 ): Promise<Artist> {
   const client = getClient(readToken ? { token: readToken } : undefined)
   return (await client.fetch(artistBySlugQuery, { slug })) || ({} as any)
@@ -185,8 +178,8 @@ export async function getAllArtworkSlugs(): Promise<Pick<Artwork, 'slug'>[]> {
 }
 
 export async function getArtworkBySlug(
-  readToken: string | undefined,
   slug: string,
+  readToken?: string,
 ): Promise<Artwork> {
   const client = getClient(readToken ? { token: readToken } : undefined)
   return (await client.fetch(artworkBySlugQuery, { slug })) || ({} as any)
