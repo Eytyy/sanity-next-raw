@@ -20,6 +20,7 @@ import {
   artworkBySlugQuery,
   artworkQuery,
   artworkSlugsQuery,
+  contactQuery,
   indexQuery,
   pageBySlugQuery,
   pagesSlugsQuery,
@@ -32,6 +33,7 @@ import {
 } from 'lib/sanity.queries'
 import { createClient, type SanityClient } from 'next-sanity'
 
+import { ContactPageProps } from '@/components/contact/ContactPageDisplay'
 import type { IndexPageProps } from '@/components/home/IndexPage'
 import type { LandingPageProps } from '@/components/page/Landing'
 
@@ -89,6 +91,13 @@ export async function getHome(
 ): Promise<IndexPageProps['page']> {
   const client = getClient(readToken ? { token: readToken } : undefined)
   return await client.fetch(indexQuery)
+}
+
+export async function getContact(
+  readToken?: string,
+): Promise<ContactPageProps['page']> {
+  const client = getClient(readToken ? { token: readToken } : undefined)
+  return await client.fetch(contactQuery)
 }
 
 export async function getBlog(

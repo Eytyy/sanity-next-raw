@@ -66,11 +66,15 @@ export async function pareseModulesImagesBlurDataURL(
             ...module,
             content: await pareseContentImagesBlurDataURL(module.content),
           }
-        case 'module.image':
+        case 'module.image': {
           return {
             ...module,
-            image: await addBlurDataURLToImage({ ...module.image, alt: '' }),
+            image: await addBlurDataURLToImage({
+              ...module.image,
+              alt: module.alt ?? '',
+            }),
           }
+        }
         case 'module.video':
         case 'module.youtube':
           return {

@@ -45,7 +45,6 @@ export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
     getSettings(token),
     getPostAndMoreStories(params.slug, token),
   ])
-
   if (!post) {
     return {
       notFound: true,

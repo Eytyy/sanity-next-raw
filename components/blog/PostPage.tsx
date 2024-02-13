@@ -1,5 +1,5 @@
 import SectionSeparator from 'components/SectionSeparator'
-import type { InternalPost, Post, Settings } from 'lib/sanity.queries'
+import type { InternalPost, Post } from 'lib/sanity.queries'
 import { notFound } from 'next/navigation'
 
 import HeadInner from '../shared/HeadInner'

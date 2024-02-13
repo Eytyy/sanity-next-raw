@@ -288,6 +288,27 @@ const homeHeroModuleFields = groq`
   }
 `
 
+export const contactQuery = groq`
+*[_type == "contact"][0] {
+  title,
+  "slug": slug.current,
+  hero {
+    content[] {
+      _key, _type, title,
+      ${imageModule},
+      ${videoModule},
+      ${youtubeModule}
+    }
+  },
+  form{
+    fields[] {
+      _type, _key, label, type,
+      required, name, placeholder,
+      options[]
+    }
+  }
+}`
+
 export const indexQuery = groq`
 *[_type == "home"][0] {
    hero {

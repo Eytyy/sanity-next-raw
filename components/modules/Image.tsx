@@ -10,26 +10,17 @@ export default function ImageModule({
   alt,
   mediaConfig,
 }: ImageModuleProps) {
-  const { background, maxWidth, objectFit, layout, sizes } = mediaConfig
-  return background ? (
+  return mediaConfig?.background ? (
     <SanityImageBackground
-      maxWidth={maxWidth}
-      layout={layout}
-      sizes={sizes}
-      image={{ ...image, alt }}
       className={cn(
-        objectFit === 'contain' ? 'object-contain' : 'object-cover',
+        mediaConfig?.objectFit === 'contain'
+          ? 'object-contain'
+          : 'object-cover',
       )}
+      image={{ ...image, alt }}
+      {...mediaConfig}
     />
   ) : (
-    <SanityImage
-      maxWidth={maxWidth}
-      layout={layout}
-      sizes={sizes}
-      image={{
-        ...image,
-        alt,
-      }}
-    />
+    <SanityImage image={{ ...image, alt }} {...mediaConfig} />
   )
 }
