@@ -165,19 +165,6 @@ const imageModuleFields = groq`
   }
 `
 
-const homeHeroModuleFields = groq`
-  _type, variant,
-  content[] {
-    ...,
-    _type == 'module.image' => {
-      ${imageModuleFields},
-      image {
-        ${imageAssetFields}
-      }
-    }
-  }
-`
-
 export const settingsQuery = groq`*[_type == "settings"][0] {
   ...,
   menu[] {
@@ -197,101 +184,151 @@ export const settingsQuery = groq`*[_type == "settings"][0] {
   'artistsCount': count(*[_type == 'artist']),
 }`
 
+const textModule = groq`
+  _type == 'module.body' => {
+    text[] {
+      ${portableTextFields}
+    }
+  }
+`
+const imageModule = groq`
+  _type == 'module.image' => {
+    ${imageModuleFields},
+    image {
+      ${imageAssetFields}
+    }
+  }
+`
+
+const videoModule = groq`
+  _type == 'module.video' => {
+    "src": video.asset->url,
+    layout,
+    autoplay,
+    loop,
+    "cover": image {
+      "alt": ^.title,
+      ${imageAssetFields}
+    }
+  }
+`
+
+const youtubeModule = groq`
+  _type == 'module.youtube' => {
+    "src": url,
+    autoplay,
+    loop,
+    "cover": image {
+      "alt": ^.title,
+      ${imageAssetFields}
+    }
+  }
+`
+
+const mediaModule = groq`
+  _type == 'module.media' => {
+    variant,
+    items[] {
+      _key, _type,
+      ${imageModule},
+      ${videoModule},
+      ${youtubeModule}
+    }
+  }
+`
+
+const postModule = groq`
+  _type == 'module.posts' => {
+    addLandingLink,
+    variant == 'latest' =>  {
+      "content": *[_type == 'post'] | order(_createdAt desc)[0..2] {
+        ${postPreviewFields}
+      }
+    },
+    variant == 'manual' => {
+      "content": posts[]-> {
+        ${postPreviewFields}
+      }
+    }
+  }
+`
+
+const artistModule = groq`
+  _type == 'module.artists' => {
+    addLandingLink,
+    "content": items[]-> {
+      ${artistPreviewFields}
+    }
+  }
+`
+
+const artworkModule = groq`
+  _type == 'module.artworks' => {
+    addLandingLink,
+    variant == 'latest' =>  {
+      "content": *[_type == 'artwork'] | order(_createdAt desc)[0..2] {
+        ${artworkPreviewFields}
+      }
+    },
+    variant == 'manual' => {
+      "content": artworks[]-> {
+        ${artworkPreviewFields}
+      }
+    }
+  }
+`
+
+const homeHeroModuleFields = groq`
+  _type, variant,
+  content[] {
+    _key, _type, title,
+    ${imageModule},
+    ${videoModule},
+    ${youtubeModule}
+  }
+`
+
 export const indexQuery = groq`
 *[_type == "home"][0] {
    hero {
     ${homeHeroModuleFields}
   },
-  modules[] {
+  content[] {
     _key, _type, title,
-    _type == 'module.image' => {
-      ${imageModuleFields},
-      image {
-        alt,
-        ${imageAssetFields}
-      }
-    },
-    _type == 'module.media' => {
-      variant,
-      items[] {
-        _key, _type,
-        _type == 'module.image' => {
-          ${imageModuleFields},
-          image {
-            ${imageAssetFields}
-          }
-        },
-        _type == 'module.video' => {
-          "src": video.asset->url,
-          layout,
-          autoplay,
-          loop,
-          "cover": image {
-            "alt": ^.title,
-            ${imageAssetFields}
-          }
-        },
-        _type == 'module.youtube' => {
-          "src": url,
-          autoplay,
-          loop,
-          "cover": image {
-            "alt": ^.title,
-            ${imageAssetFields}
-          }
-        }
-      }
-    },
-    _type == 'module.youtube' => {
-      "src": url,
-      autoplay,
-      loop,
-      "cover": image {
-        "alt": ^.title,
-        ${imageAssetFields}
-      }
-    },
-    _type == 'module.video' => {
-      "src": video.asset->url,
-      layout,
-      autoplay,
-      loop,
-      "cover": image {
-        "alt": ^.title,
-        ${imageAssetFields}
-      }
-    },
-    _type == 'module.posts' => {
-      addLandingLink,
-      variant == 'latest' =>  {
-        "content": *[_type == 'post'] | order(_createdAt desc)[0..2] {
-          ${postPreviewFields}
-        }
-      },
-      variant == 'manual' => {
-        "content": posts[]-> {
-          ${postPreviewFields}
-        }
-      }
-    },
-    _type == 'module.artists' => {
-       addLandingLink,
-      "content": items[]-> {
-        ${artistPreviewFields}
-      }
-    },
-    _type == 'module.artworks' => {
-      addLandingLink,
-      variant == 'latest' =>  {
-        "content": *[_type == 'artwork'] | order(_createdAt desc)[0..2] {
-          ${artworkPreviewFields}
-        }
-      },
-      variant == 'manual' => {
-        "content": artworks[]-> {
-          ${artworkPreviewFields}
-        }
-      }
+    ${imageModule},
+    ${mediaModule},
+    ${videoModule},
+    ${youtubeModule},
+    ${postModule},
+    ${artistModule},
+    ${artworkModule},
+    ${textModule}
+  }
+}`
+
+export const pagesSlugsQuery = groq`
+*[_type == "page" && defined(slug.current)][].slug.current
+`
+
+export const pageBySlugQuery = groq`
+*[_type == "page" && slug.current == $slug][0] {
+  _id,
+  title,
+  "slug":  slug.current,
+  content[] {
+    _type, _key, title,
+    ${imageModule},
+    ${mediaModule},
+    ${videoModule},
+    ${youtubeModule},
+    ${textModule}
+  },
+  hero {
+    content[] {
+      _key, _type, title,
+      ${imageModule},
+      ${videoModule},
+      ${youtubeModule}
     }
   }
 }`
@@ -367,12 +404,6 @@ export const artistBySlugQuery = groq`
   ${artistFields}
 }
 `
-
-export interface Home {
-  hero: {
-    variant: 'default' | 'slider' | 'grid'
-  }
-}
 
 export interface Author {
   name?: string

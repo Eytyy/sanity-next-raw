@@ -5,30 +5,35 @@ import {
   studioUrl,
   useCdn,
 } from 'lib/sanity.api'
-import {
+import type {
   Artist,
+  Artwork,
+  InternalPost,
+  Post,
+  PostCategory,
+  Settings,
+} from 'lib/sanity.queries'
+import {
   artistBySlugQuery,
   artistSlugsQuery,
   artistsQuery,
-  Artwork,
   artworkBySlugQuery,
   artworkQuery,
   artworkSlugsQuery,
   indexQuery,
-  InternalPost,
-  type Post,
+  pageBySlugQuery,
+  pagesSlugsQuery,
   postAndMoreStoriesQuery,
   postBySlugQuery,
   postCategoriesQuery,
-  PostCategory,
   postPreviewFields,
   postSlugsQuery,
-  type Settings,
   settingsQuery,
 } from 'lib/sanity.queries'
 import { createClient, type SanityClient } from 'next-sanity'
 
-import { IndexPageProps } from '@/components/home/IndexPage'
+import type { IndexPageProps } from '@/components/home/IndexPage'
+import type { LandingPageProps } from '@/components/page/Landing'
 
 import { BuildBlogQueryFilterString } from './helpers'
 
@@ -61,6 +66,22 @@ export const getSanityImageConfig = () => getClient()
 export async function getSettings(readToken?: string): Promise<Settings> {
   const client = getClient(readToken ? { token: readToken } : undefined)
   return (await client.fetch(settingsQuery)) || {}
+}
+
+export async function getAllPagesSlugs(): Promise<
+  Pick<LandingPageProps['page'], 'slug'>[]
+> {
+  const client = getClient()
+  const slugs = (await client.fetch<string[]>(pagesSlugsQuery)) || []
+  return slugs.map((slug) => ({ slug }))
+}
+
+export async function getPageBySlug(
+  slug: string,
+  readToken?: string,
+): Promise<LandingPageProps['page']> {
+  const client = getClient(readToken ? { token: readToken } : undefined)
+  return (await client.fetch(pageBySlugQuery, { slug })) || ({} as any)
 }
 
 export async function getHome(

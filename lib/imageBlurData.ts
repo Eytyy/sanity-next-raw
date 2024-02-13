@@ -45,6 +45,11 @@ export async function pareseModulesImagesBlurDataURL(
   return await Promise.all(
     modules.map(async (module) => {
       switch (module._type) {
+        case 'module.body':
+          return {
+            ...module,
+            text: await pareseModulesImagesBlurDataURL(module.text),
+          }
         case 'module.artists':
           return {
             ...module,
@@ -55,6 +60,7 @@ export async function pareseModulesImagesBlurDataURL(
             ...module,
             content: await pareseContentImagesBlurDataURL(module.content),
           }
+        case 'module.posts':
         case 'module.posts':
           return {
             ...module,

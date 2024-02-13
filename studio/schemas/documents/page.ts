@@ -27,8 +27,8 @@ export default defineField({
     }),
     // Modules
     defineField({
-      name: 'modules',
-      title: 'Modules',
+      name: 'content',
+      title: 'Content',
       type: 'array',
       of: [
         { type: 'module.body' },

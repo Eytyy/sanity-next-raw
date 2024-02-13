@@ -4,10 +4,14 @@ import { MediaModuleProps } from '../types'
 import MediaGrid from './Grid'
 import MediaSlider from './Slider'
 
-export default function MediaModule({ variant, ...module }: MediaModuleProps) {
+export default function MediaModule({
+  variant,
+  mediaConfig,
+  ...module
+}: MediaModuleProps) {
   switch (variant) {
     case 'slider':
-      return <MediaSlider items={module.items} />
+      return <MediaSlider items={module.items} mediaConfig={mediaConfig} />
     case 'grid':
       return <MediaGrid items={module.items} />
     default:

@@ -6,10 +6,7 @@ import type { SharedPageProps } from 'pages/_app'
 
 import ArtworkLandingPage from '@/components/artwork/Landing'
 import PreviewArtworkLandingPage from '@/components/artwork/PreviewLanding'
-import {
-  addBlurDataURLToImage,
-  pareseContentImagesBlurDataURL,
-} from '@/lib/imageBlurData'
+import { pareseContentImagesBlurDataURL } from '@/lib/imageBlurData'
 
 interface PageProps extends SharedPageProps {
   artwork: Artwork[]

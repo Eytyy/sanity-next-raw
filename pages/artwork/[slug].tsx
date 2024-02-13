@@ -37,7 +37,7 @@ export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
 
   const [settings, artwork] = await Promise.all([
     getSettings(readToken),
-    getArtworkBySlug(readToken, params.slug),
+    getArtworkBySlug(params.slug, readToken),
   ])
 
   if (!artwork) {

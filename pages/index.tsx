@@ -39,7 +39,7 @@ export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
     props: {
       page: {
         ...page,
-        modules: await pareseModulesImagesBlurDataURL(page.modules),
+        content: await pareseModulesImagesBlurDataURL(page.content),
       },
       settings,
       draftMode,

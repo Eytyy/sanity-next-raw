@@ -50,7 +50,7 @@ export type ImageProps = {
   }
 }
 
-export type ImageModuleProps = {
+export interface ImageModuleProps {
   _type: 'module.image'
   _key: string
   image: Omit<ImageProps, 'alt'>
@@ -61,6 +61,7 @@ export type ImageModuleProps = {
   caption: string
   cta: any
   textOverlay: string
+  mediaConfig?: MediaConfig
 }
 
 export type YoutubeModuleProps = {
@@ -84,11 +85,18 @@ export type VideoModuleProps = {
   loop: boolean
 }
 
-export type MediaModuleProps = {
+export interface MediaModuleProps {
   _type: 'module.media'
   _key: string
   variant: 'slider' | 'grid'
   items: (VideoModuleProps | YoutubeModuleProps | ImageModuleProps)[]
+  mediaConfig?: MediaConfig
+}
+
+export type TextModuleProps = {
+  _type: 'module.body'
+  _key: string
+  text: any[]
 }
 
 export type ModuleProps =
@@ -99,3 +107,12 @@ export type ModuleProps =
   | YoutubeModuleProps
   | VideoModuleProps
   | MediaModuleProps
+  | TextModuleProps
+
+export type MediaConfig = {
+  layout?: MediaLayout
+  background?: boolean
+  maxWidth?: number
+  sizes?: string
+  objectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down'
+}

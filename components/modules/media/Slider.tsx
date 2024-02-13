@@ -3,13 +3,14 @@ import React from 'react'
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md'
 
 import Module from '..'
-import { MediaModuleProps } from '../types'
+import type { MediaConfig, MediaModuleProps, ModuleProps } from '../types'
 
 type Props = {
-  items: MediaModuleProps['items']
+  items: ModuleProps[]
+  mediaConfig?: MediaConfig
 }
 
-export default function MediaSlider({ items }: Props) {
+export default function MediaSlider({ items, mediaConfig }: Props) {
   const [emblaRef, emblaApi] = useEmblaCarousel()
 
   const scrollPrev = React.useCallback(() => {
@@ -28,7 +29,7 @@ export default function MediaSlider({ items }: Props) {
             className="embla__slide flex-[0_0_100%] min-w-0 flex flex-col items-center justify-center"
           >
             <div className="w-full">
-              <Module module={item} />
+              <Module module={item} mediaConfig={mediaConfig} />
             </div>
           </div>
         ))}

@@ -1,7 +1,6 @@
 import type { Artwork, Settings } from 'lib/sanity.queries'
 import { notFound } from 'next/navigation'
 
-import ContentHeader from '../shared/ContentHeader'
 import HeadInner from '../shared/HeadInner'
 import PageTitle from '../shared/PageTitle'
 import ArtworkHeader from './ArtworkHeader'

@@ -51,27 +51,27 @@ export default defineField({
       ],
       validation: (Rule) =>
         Rule.custom((content, { document }) => {
-          const {
-            variant,
-          }: {
-            variant: 'default' | 'slider' | 'grid'
-          } = document.hero as any
+          // const {
+          //   variant,
+          // }: {
+          //   variant: 'default' | 'slider' | 'grid'
+          // } = document.hero as any
 
-          if (variant === 'default' && content.length > 1) {
-            return 'Only one item allowed for default variant. Either change the variant or remove items.'
-          }
-          if (
-            variant === 'grid' &&
-            (content.length < 3 || content.length > 3)
-          ) {
-            return 'Exactly three items required for grid variant. Either change the variant or add/remove items.'
-          }
-          if (variant === 'default' && content.length === 0) {
-            return 'Add an item for default variant.'
-          }
-          if (variant === 'slider' && content.length < 2) {
-            return 'Add at least two items for slider variant.'
-          }
+          // if (variant === 'default' && content.length > 1) {
+          //   return 'Only one item allowed for default variant. Either change the variant or remove items.'
+          // }
+          // if (
+          //   variant === 'grid' &&
+          //   (content.length < 3 || content.length > 3)
+          // ) {
+          //   return 'Exactly three items required for grid variant. Either change the variant or add/remove items.'
+          // }
+          // if (variant === 'default' && content.length === 0) {
+          //   return 'Add an item for default variant.'
+          // }
+          // if (variant === 'slider' && content.length < 2) {
+          //   return 'Add at least two items for slider variant.'
+          // }
           return true
         }),
     }),

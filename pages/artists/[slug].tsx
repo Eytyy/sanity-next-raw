@@ -36,7 +36,7 @@ export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
 
   const [settings, artist] = await Promise.all([
     getSettings(readToken),
-    getArtistBySlug(readToken, params.slug),
+    getArtistBySlug(params.slug, readToken),
   ])
 
   if (!artist) {

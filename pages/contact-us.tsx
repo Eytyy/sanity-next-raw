@@ -3,7 +3,7 @@ import { Settings } from 'lib/sanity.queries'
 import { GetStaticProps } from 'next'
 import type { SharedPageProps } from 'pages/_app'
 
-interface PageProps extends SharedPageProps {
+interface ContactPageProps extends SharedPageProps {
   settings: Settings
 }
 
@@ -11,7 +11,7 @@ interface Query {
   [key: string]: string
 }
 
-export default function ContactPage(props: PageProps) {
+export default function ContactPage(props: ContactPageProps) {
   const { settings } = props
   return (
     <div>
@@ -20,7 +20,9 @@ export default function ContactPage(props: PageProps) {
   )
 }
 
-export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
+export const getStaticProps: GetStaticProps<ContactPageProps, Query> = async (
+  ctx,
+) => {
   const { draftMode = false } = ctx
 
   const [settings] = await Promise.all([getSettings()])

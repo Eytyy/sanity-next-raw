@@ -43,7 +43,7 @@ export const getStaticProps: GetStaticProps<PageProps, Query> = async (ctx) => {
 
   const [settings, { post, morePosts }] = await Promise.all([
     getSettings(token),
-    getPostAndMoreStories(token, params.slug),
+    getPostAndMoreStories(params.slug, token),
   ])
 
   if (!post) {

@@ -9,16 +9,14 @@ export default defineField({
   type: 'document',
   icon: HomeIcon,
   fields: [
-    // Hero
     defineField({
       name: 'hero',
       title: 'Hero',
       type: 'hero.home',
     }),
-    // Modules
     defineField({
-      name: 'modules',
-      title: 'Modules',
+      name: 'content',
+      title: 'Content',
       type: 'array',
       of: [
         { type: 'module.image' },
