@@ -287,6 +287,33 @@ const homeHeroModuleFields = groq`
     ${youtubeModule}
   }
 `
+export const formQuery = groq`
+  form {
+    fields {
+      messageField {
+        "type": "textarea",
+        "name": "message",
+        label,
+        required,
+      },
+      emailField {
+        "type": "email",
+        "name": "email",
+        label,
+        required,
+      },
+      nameField {
+        "type": "input",
+        "name": "name",
+        label,
+        required,
+      },
+      customFields[] {
+        _key, label, type, required,
+      }
+    }
+  }
+`
 
 export const contactQuery = groq`
 *[_type == "contact"][0] {
@@ -300,13 +327,7 @@ export const contactQuery = groq`
       ${youtubeModule}
     }
   },
-  form{
-    fields[] {
-      _type, _key, label, type,
-      required, name, placeholder,
-      options[]
-    }
-  }
+  ${formQuery}
 }`
 
 export const indexQuery = groq`

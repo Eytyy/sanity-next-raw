@@ -15,6 +15,7 @@
     "singleQuote": true
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
     "@next/env": "^14.1.0",
     "@plaiceholder/next": "^3.0.0",
     "@portabletext/react": "3.0.11",
@@ -42,8 +43,10 @@
     "query-string": "^8.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.50.1",
     "react-icons": "^5.0.1",
     "react-youtube": "^10.1.0",
+    "resend": "^3.2.0",
     "rxjs": "^7.8.1",
     "sanity": "3.24.1",
     "sanity-image": "^0.1.7",
@@ -54,7 +57,8 @@
     "sharp": "0.32",
     "styled-components": "6.1.8",
     "swr": "2.2.4",
-    "tailwind-merge": "^2.2.1"
+    "tailwind-merge": "^2.2.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/react": "18.2.48",

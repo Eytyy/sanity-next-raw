@@ -1,6 +1,7 @@
 import type { Settings } from 'lib/sanity.queries'
 
-import Form, { FormFieldProps } from '@/components/form/Form'
+import Form from '@/components/form/Form'
+import { IForm } from '@/components/form/types'
 import { ModuleProps } from '@/components/modules/types'
 import PageHero from '@/components/page/PageHero'
 import HeadLanding from '@/components/shared/HeadLanding'
@@ -10,7 +11,7 @@ export interface ContactPageProps {
     title: string
     slug: string
     hero: { variant: 'default' | 'slider' | 'grid'; content: ModuleProps[] }
-    form: { fields: FormFieldProps[] }
+    form: IForm
   }
   settings: Settings
   preview?: boolean

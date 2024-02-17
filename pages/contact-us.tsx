@@ -40,7 +40,21 @@ export const getStaticProps: GetStaticProps<ContactPageProps, Query> = async (
 
   return {
     props: {
-      page,
+      page: {
+        ...page,
+        form: {
+          ...page.form,
+          fields: {
+            ...page.form.fields,
+            customFields: page.form.fields.customFields.map((field, index) => {
+              return {
+                ...field,
+                name: `customField${index}`,
+              }
+            }),
+          },
+        },
+      },
       settings,
       draftMode,
       token: token ?? '',

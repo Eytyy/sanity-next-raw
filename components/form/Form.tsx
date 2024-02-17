@@ -1,128 +1,108 @@
-import React from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import React, { useMemo } from 'react'
+import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
+import { z } from 'zod'
 
-interface SharedFormFieldProps {
-  _key: string
-  label: string
-  name: string
-  required: boolean
-  placeholder?: string
+import FormField from './FormField'
+import FormMessage from './FormMessage'
+import { IForm } from './types'
+import { generateSchema } from './utils'
+
+async function sendEmail(data: { [key: string]: string }) {
+  return fetch('/api/contact', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then((res) => res.json())
 }
 
-interface TextFormFieldProps extends SharedFormFieldProps {
-  type: 'text' | 'email' | 'tel' | 'textarea'
-}
+export default function Form({ fields }: IForm) {
+  const schema = useMemo(() => generateSchema(fields), [fields])
 
-interface OptionsFormFieldProps extends SharedFormFieldProps {
-  type: 'select' | 'radio'
-  options: string[]
-}
+  const { reset, register, handleSubmit, formState, control } = useForm<
+    z.infer<typeof schema>
+  >({
+    defaultValues: {
+      customFields: fields.customFields.map((field) => ({
+        [field.name]: '',
+      })),
+    },
+    resolver: zodResolver(schema),
+  })
 
-export type FormFieldProps = TextFormFieldProps | OptionsFormFieldProps
+  const { fields: customFields } = useFieldArray({
+    control,
+    name: 'customFields',
+  })
 
-export default function Form({ fields }: { fields: FormFieldProps[] }) {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    const data = Object.fromEntries(formData.entries())
-    console.log(data)
+  const processForm: SubmitHandler<z.infer<typeof schema>> = async (data) => {
+    try {
+      console.log(data)
+      // const result = await sendEmail(data)
+      // toast.success('Email sent!')
+      reset()
+      return
+    } catch (e) {
+      // toast error
+      reset(data)
+      // toast.error('Something went wrong! Please try again.')
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-2xl">
-      {fields.map((field) => (
-        <div key={field._key}>
-          <FormField {...field} />
+    <form onSubmit={handleSubmit(processForm)} className="space-y-8 max-w-2xl">
+      {fields.nameField && (
+        <div>
+          <FormField
+            {...fields.nameField}
+            {...register(fields.nameField.name as any)}
+          />
+          <FormMessage message={formState.errors.name?.message as string} />
         </div>
-      ))}
+      )}
+      {fields.emailField && (
+        <div>
+          <FormField
+            {...fields.emailField}
+            {...register(fields.emailField.name as any)}
+          />
+          <FormMessage message={formState.errors.email?.message as string} />
+        </div>
+      )}
+      {fields.messageField && (
+        <div>
+          <FormField
+            {...fields.messageField}
+            {...register(fields.messageField.name as any)}
+          />
+          <FormMessage message={formState.errors.message?.message as string} />
+        </div>
+      )}
+      {customFields.map((field, index) => {
+        const { name, ...fieldProps } = fields.customFields[index]
+        return (
+          <div key={field.id}>
+            <FormField
+              {...fieldProps}
+              {...register(`customFields.${index}.customField${index}` as any)}
+            />
+            <FormMessage
+              message={
+                formState.errors.customFields?.[index]?.[`customField${index}`]
+                  ?.message as string
+              }
+            />
+          </div>
+        )
+      })}
       <button
-        className="bg-black text-white p-2 rounded-md w-full focus:outline-none"
+        className="bg-black text-white p-2 rounded-md w-full focus:outline-none m-0"
         type="submit"
       >
         Submit
       </button>
     </form>
-  )
-}
-
-function FormField(field: FormFieldProps) {
-  switch (field.type) {
-    case 'text':
-    case 'email':
-    case 'tel':
-    case 'textarea':
-      return <TextField {...field} />
-    case 'select':
-      return <SelectField {...field} />
-    case 'radio':
-      return <RadioField {...field} />
-    default:
-      return null
-  }
-}
-
-function TextField(field: TextFormFieldProps) {
-  return (
-    <div className="relative">
-      <label
-        className="absolute top-2 left-2 text-sm z-10 text-gray-500"
-        htmlFor={field.name}
-      >
-        {field.label}
-      </label>
-      {field.type === 'textarea' ? (
-        <textarea
-          className="border p-2 pt-8 rounded-md w-full focus:outline-none focus:border-black"
-          name={field.name}
-          required={field.required}
-          rows={4}
-        />
-      ) : (
-        <input
-          className="border p-2 pt-8 rounded-md w-full focus:outline-none focus:border-black"
-          type={field.type}
-          name={field.name}
-          required={field.required}
-        />
-      )}
-    </div>
-  )
-}
-
-function SelectField(field: OptionsFormFieldProps) {
-  return (
-    <div>
-      <select
-        className="border p-2 rounded-md w-full focus:outline-none focus:border-black"
-        name={field.name}
-        required={field.required}
-      >
-        <option value="">
-          {field.placeholder || `Select a ${field.label.toLowerCase()}`}
-        </option>
-        {field.options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-    </div>
-  )
-}
-
-function RadioField(field: OptionsFormFieldProps) {
-  return (
-    <fieldset>
-      {field.options.map((option) => (
-        <label key={option}>
-          <input
-            type="radio"
-            name={field.name}
-            value={option}
-            required={field.required}
-          />
-          {option}
-        </label>
-      ))}
-    </fieldset>
   )
 }
