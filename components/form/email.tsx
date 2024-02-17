@@ -18,8 +18,11 @@ const FormEmail: React.FC<Readonly<FormEmailProps>> = ({
 }) => (
   <Tailwind>
     <div>
-      <p>{`From <strong>${name}</strong>(${email}).`}</p>
-      {message.value && <p className="text-lg">{message.value}</p>}
+      <p>
+        From <strong>${name}</strong>
+        {`(${email}).`}
+      </p>
+      {message.value && <p>{message.value}</p>}
       <div>
         {customFields.map((field, index) => (
           <div key={`customField${index}`}>
