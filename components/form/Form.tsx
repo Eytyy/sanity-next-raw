@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useMemo } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 import FormField from './FormField'
@@ -8,26 +9,38 @@ import FormMessage from './FormMessage'
 import { IForm } from './types'
 import { generateSchema } from './utils'
 
-async function sendEmail(data: { [key: string]: string }) {
-  return fetch('/api/contact', {
+async function sendEmail(data: { [key: string]: any }) {
+  const response = await fetch('/api/form-submission', {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
     },
-  }).then((res) => res.json())
+  })
+  const result = await response.json()
+  if (response.ok) {
+    return result
+  }
+  throw new Error(result)
 }
 
-export default function Form({ fields }: IForm) {
+export default function Form({ fields, singleton, slug }: IForm) {
+  const [submitting, setSubmitting] = React.useState(false)
   const schema = useMemo(() => generateSchema(fields), [fields])
 
   const { reset, register, handleSubmit, formState, control } = useForm<
     z.infer<typeof schema>
   >({
     defaultValues: {
+      singleton,
+      slug,
       customFields: fields.customFields.map((field) => ({
-        [field.name]: '',
+        value: '',
+        label: field.label,
       })),
+      message: {
+        label: fields.messageField?.label,
+      },
     },
     resolver: zodResolver(schema),
   })
@@ -39,15 +52,16 @@ export default function Form({ fields }: IForm) {
 
   const processForm: SubmitHandler<z.infer<typeof schema>> = async (data) => {
     try {
-      console.log(data)
-      // const result = await sendEmail(data)
-      // toast.success('Email sent!')
+      setSubmitting(true)
+      await sendEmail(data)
+      toast.success('Email sent!')
+      setSubmitting(false)
       reset()
-      return
     } catch (e) {
+      setSubmitting(false)
       // toast error
       reset(data)
-      // toast.error('Something went wrong! Please try again.')
+      toast.error('Something went wrong! Please try again.')
     }
   }
 
@@ -75,9 +89,12 @@ export default function Form({ fields }: IForm) {
         <div>
           <FormField
             {...fields.messageField}
-            {...register(fields.messageField.name as any)}
+            name={`${fields.messageField.name}.value`}
+            {...register(`${fields.messageField.name}.value` as any)}
           />
-          <FormMessage message={formState.errors.message?.message as string} />
+          <FormMessage
+            message={formState.errors.message?.['value']?.message as string}
+          />
         </div>
       )}
       {customFields.map((field, index) => {
@@ -86,22 +103,23 @@ export default function Form({ fields }: IForm) {
           <div key={field.id}>
             <FormField
               {...fieldProps}
-              {...register(`customFields.${index}.customField${index}` as any)}
+              {...register(`customFields.${index}.value` as any)}
             />
             <FormMessage
               message={
-                formState.errors.customFields?.[index]?.[`customField${index}`]
-                  ?.message as string
+                formState.errors.customFields?.[index]?.['value']
+                  .message as string
               }
             />
           </div>
         )
       })}
       <button
-        className="bg-black text-white p-2 rounded-md w-full focus:outline-none m-0"
+        disabled={submitting}
+        className="bg-black text-white p-2 rounded-md w-full focus:outline-none m-0 hover:bg-black/80 transition-colors duration-300 ease-in-out disabled:bg-black/10"
         type="submit"
       >
-        Submit
+        {submitting ? 'Submitting...' : 'Submit'}
       </button>
     </form>
   )

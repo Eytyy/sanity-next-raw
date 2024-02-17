@@ -6,22 +6,36 @@ export default defineField({
   title: 'Contact',
   type: 'document',
   icon: MdOutlineAlternateEmail,
+  groups: [
+    {
+      title: 'Content',
+      name: 'content',
+      default: true,
+    },
+    {
+      title: 'form',
+      name: 'form',
+    },
+  ],
   fields: [
     defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
       validation: (Rule) => Rule.required(),
+      group: 'content',
     }),
     defineField({
       name: 'hero',
       title: 'Hero',
       type: 'hero.page',
+      group: 'content',
     }),
     defineField({
       name: 'form',
       title: 'Form',
       type: 'module.form',
+      group: 'form',
     }),
     defineField({
       name: 'slug',
@@ -32,6 +46,7 @@ export default defineField({
       },
       validation: (Rule) => Rule.required(),
       readOnly: true,
+      group: 'content',
     }),
   ],
 })

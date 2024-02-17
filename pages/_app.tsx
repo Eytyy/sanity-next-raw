@@ -3,6 +3,7 @@ import 'tailwindcss/tailwind.css'
 import { NextPage } from 'next'
 import { AppProps } from 'next/app'
 import { lazy, Suspense } from 'react'
+import { Toaster } from 'sonner'
 
 import Layout from '@/components/layout/Layout'
 
@@ -37,7 +38,10 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
           <Component {...pageProps} />
         </PreviewProvider>
       ) : (
-        getLayout(<Component {...pageProps} />)
+        <>
+          <Toaster />
+          {getLayout(<Component {...pageProps} />)}
+        </>
       )}
       {draftMode && (
         <Suspense>

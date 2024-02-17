@@ -1,4 +1,4 @@
-import { z, ZodTypeAny } from 'zod'
+import { z } from 'zod'
 
 import { FormFieldProps, IForm } from '@/components/form/types'
 
@@ -44,14 +44,24 @@ export const parseZodType = (field: FormFieldProps) => {
 }
 
 export const generateSchema = (fields: IForm['fields']) => {
-  const customFieldSchemas = fields.customFields.reduce((acc, field) => {
-    acc[field.name] = parseZodType(field)
+  const customFieldSchemas = fields.customFields.reduce((acc, field, index) => {
+    acc = {
+      value: parseZodType(field),
+      label: z.string(),
+    }
     return acc
   }, {})
   const schema = z.object({
+    singleton: z.string().optional(),
+    slug: z.string().optional(),
     ...(fields.nameField && { name: parseZodType(fields.nameField) }),
     ...(fields.emailField && { email: parseZodType(fields.emailField) }),
-    ...(fields.messageField && { message: parseZodType(fields.messageField) }),
+    ...(fields.messageField && {
+      message: z.object({
+        value: parseZodType(fields.messageField),
+        label: z.string(),
+      }),
+    }),
     customFields: z.array(z.object(customFieldSchemas)),
   })
   return schema

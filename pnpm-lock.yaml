@@ -121,6 +121,9 @@ dependencies:
   sharp:
     specifier: '0.32'
     version: 0.32.6
+  sonner:
+    specifier: ^1.4.0
+    version: 1.4.0(react-dom@18.2.0)(react@18.2.0)
   styled-components:
     specifier: 6.1.8
     version: 6.1.8(react-dom@18.2.0)(react@18.2.0)
@@ -7093,6 +7096,16 @@ packages:
       immer: 10.0.3
       is-plain-object: 5.0.0
       tiny-warning: 1.0.3
+    dev: false
+
+  /sonner@1.4.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-nvkTsIuOmi9e5Wz5If8ldasJjZNVfwiXYijBi2dbijvTQnQppvMcXTFNxL/NUFWlI2yJ1JX7TREDsg+gYm9WyA==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /sort-object-keys@1.1.3:

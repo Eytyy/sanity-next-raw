@@ -1,21 +1,33 @@
 interface FormEmailProps {
   name: string
   email: string
-  message: string
-  affiliation: string
+  message: {
+    value: string
+    label: string
+  }
+  customFields: any[]
 }
 
 const FormEmail: React.FC<Readonly<FormEmailProps>> = ({
   name,
   email,
   message,
-  affiliation,
+  customFields,
 }) => (
   <div>
     <p>
-      From <strong>{name}</strong>, ${affiliation}, {email}.
+      From <strong>{name}</strong>, {email}.
     </p>
-    <p>{message}</p>
+    <h2>{message.label}</h2>
+    <p>{message.value}</p>
+    <div>
+      {customFields.map((field, index) => (
+        <div key={`customField${index}`}>
+          <h2>{field.label}</h2>
+          <p>{field.value}</p>
+        </div>
+      ))}
+    </div>
   </div>
 )
 
