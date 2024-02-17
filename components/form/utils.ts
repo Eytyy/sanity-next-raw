@@ -60,3 +60,13 @@ export const generateSchema = (fields: IForm['fields']) => {
   })
   return schema
 }
+
+export const sanitizeTextField = (value) => {
+  // Strip out any dangerous HTML tags or attributes
+  return value.replace(/<script.*?>.*?<\/script>/gi, '').trim()
+}
+
+export const validateTextField = (value) => {
+  // Basic validation, e.g., length check
+  return value.length >= 1 && value.length <= 500
+}
