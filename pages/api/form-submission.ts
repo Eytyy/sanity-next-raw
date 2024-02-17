@@ -10,7 +10,7 @@ import { formQuery } from '@/lib/sanity.queries'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 const emailConfig = {
-  from: 'Eytyy',
+  from: 'Eytyy contact@eytyy.com',
   to: ['e.tayyem@gmail.com'],
   subject: 'Contact Form Submission',
 }
