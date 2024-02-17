@@ -58,8 +58,12 @@ export const generateSchema = (fields: IForm['fields']) => {
     ...(fields.emailField && { email: parseZodType(fields.emailField) }),
     ...(fields.messageField && {
       message: z.object({
-        value: parseZodType(fields.messageField),
-        label: z.string(),
+        value: z.string().min(1, {
+          message: `${fields.messageField.label} is required`,
+        }),
+        label: z.string().min(1, {
+          message: `${fields.messageField.label} is required`,
+        }),
       }),
     }),
     customFields: z.array(z.object(customFieldSchemas)),
