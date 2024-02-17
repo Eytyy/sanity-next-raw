@@ -313,6 +313,9 @@ export const formQuery = groq`
       },
       customFields[] {
         _key, label, type, required,
+        type == 'select' || type == 'radio' => {
+          options[]
+        }
       }
     }
   }

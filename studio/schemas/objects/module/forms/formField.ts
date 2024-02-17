@@ -23,6 +23,7 @@ export default defineField({
           { title: 'Input', value: 'input' },
           { title: 'Textarea', value: 'textarea' },
           { title: 'Select', value: 'select' },
+          { title: 'Radio', value: 'radio' },
         ],
       },
       validation: (Rule) => Rule.required(),
@@ -38,11 +39,15 @@ export default defineField({
       title: 'Options',
       type: 'array',
       of: [{ type: 'string' }],
-      description: 'Only used for select',
-      hidden: ({ parent }) => parent?.type !== 'select',
+      description: 'Only used for select and radio fields',
+      hidden: ({ parent }) =>
+        parent?.type !== 'select' && parent?.type !== 'radio',
       validation: (Rule) =>
         Rule.custom((content, { parent }: any) => {
-          if (parent.type === 'select' && content.length < 2) {
+          if (
+            (parent.type === 'select' || parent.type === 'radio') &&
+            content.length < 2
+          ) {
             return 'Please add at least 2 options'
           }
           return true
