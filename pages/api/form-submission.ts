@@ -22,12 +22,14 @@ export default async function contactHandler(
 ) {
   // If the request is not a POST, return a 500
   if (!req.body) {
-    return res.status(400).json({ status: 'Bad Request' })
+    return res.status(400).json({ status: 'Bad Request', message: 'No body' })
   }
 
   // If the form submission is missing a slug or singleton, return a 500
   if (!req.body.slug && !req.body.singleton) {
-    return res.status(400).json({ status: 'Bad Request' })
+    return res
+      .status(400)
+      .json({ status: 'Bad Request', message: 'No slug or singleton' })
   }
   const { slug, singleton, ...formSubmission } = req.body
   try {
@@ -66,12 +68,12 @@ export default async function contactHandler(
     // Validate the custom fields
     formSettings.fields.customFields.forEach((fieldConfig) => {
       const submittedField = submittedCustomFields.find(
-        (field) => field.label === fieldConfig.label,
+        (field) => field.key === fieldConfig._key,
       )
       // If the field is required and not present, add an error
       if (fieldConfig.required && !submittedField?.value) {
         customFieldErrors.push({
-          field: fieldConfig.label,
+          field: fieldConfig._key,
           message: `${fieldConfig.label} is required`,
         })
       }
@@ -81,8 +83,8 @@ export default async function contactHandler(
         !fieldConfig.options.includes(submittedField?.value)
       ) {
         customFieldErrors.push({
-          field: fieldConfig.label,
-          message: `Please select a valid option for ${fieldConfig.label}`,
+          field: fieldConfig._key,
+          message: `Please select a valid option for ${fieldConfig.label}, received ${submittedField?.value}, expected ${fieldConfig.options}`,
         })
       }
       // Sanitize the value of the field
@@ -90,7 +92,7 @@ export default async function contactHandler(
         const sanitizedValue = sanitizeTextField(submittedField.value)
         if (!validateTextField(sanitizedValue)) {
           customFieldErrors.push({
-            field: fieldConfig.label,
+            field: fieldConfig._key,
             message: `Invalid value for ${fieldConfig.label}`,
           })
         }

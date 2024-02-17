@@ -38,6 +38,7 @@ export const parseZodType = (field: FormFieldProps) => {
 const basicCustomFieldSchema = z.object({
   value: z.any(),
   label: z.string(),
+  key: z.string(),
 })
 
 export const generateSchema = (fields: IForm['fields']) => {
@@ -70,3 +71,5 @@ export const validateTextField = (value) => {
   // Basic validation, e.g., length check
   return value.length >= 1 && value.length <= 500
 }
+
+export const cleanString = (str) => str.replace(/[\u200B-\u200D\uFEFF]/g, '')

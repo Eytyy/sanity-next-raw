@@ -7,7 +7,7 @@ import { z } from 'zod'
 import FormField from './FormField'
 import FormMessage from './FormMessage'
 import { IForm } from './types'
-import { generateSchema } from './utils'
+import { cleanString, generateSchema } from './utils'
 
 async function sendEmail(data: { [key: string]: any }) {
   const response = await fetch('/api/form-submission', {
@@ -28,7 +28,7 @@ export default function Form({ fields, singleton, slug }: IForm) {
   const [submitting, setSubmitting] = React.useState(false)
   const schema = useMemo(() => generateSchema(fields), [fields])
 
-  const { reset, register, handleSubmit, formState, control } = useForm<
+  const { reset, register, handleSubmit, formState, control, watch } = useForm<
     z.infer<typeof schema>
   >({
     defaultValues: {
@@ -37,6 +37,7 @@ export default function Form({ fields, singleton, slug }: IForm) {
       customFields: fields.customFields.map((field) => ({
         value: '',
         label: field.label,
+        key: field._key,
       })),
       message: {
         label: fields.messageField?.label,
@@ -52,8 +53,16 @@ export default function Form({ fields, singleton, slug }: IForm) {
 
   const processForm: SubmitHandler<z.infer<typeof schema>> = async (data) => {
     try {
+      const cleanedData = {
+        ...data,
+        customFields: data.customFields.map((field) => ({
+          ...field,
+          label: cleanString(field.label),
+          value: cleanString(field.value),
+        })),
+      }
       setSubmitting(true)
-      await sendEmail(data)
+      await sendEmail(cleanedData)
       toast.success('Email sent!')
       setSubmitting(false)
       reset()

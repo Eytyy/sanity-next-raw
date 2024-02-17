@@ -19,6 +19,7 @@
     "@next/env": "^14.1.0",
     "@plaiceholder/next": "^3.0.0",
     "@portabletext/react": "3.0.11",
+    "@react-email/tailwind": "0.0.14",
     "@sanity/client": "6.11.1",
     "@sanity/icons": "^2.8.0",
     "@sanity/image-url": "1.0.2",

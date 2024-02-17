@@ -1,3 +1,5 @@
+import { Tailwind } from '@react-email/tailwind'
+
 interface FormEmailProps {
   name: string
   email: string
@@ -14,25 +16,20 @@ const FormEmail: React.FC<Readonly<FormEmailProps>> = ({
   message,
   customFields,
 }) => (
-  <div>
-    <p>
-      From <strong>{name}</strong>, {email}.
-    </p>
-    {message.value && (
-      <div>
-        <h2>{message.label}</h2>
-        <p>{message.value}</p>
-      </div>
-    )}
+  <Tailwind>
     <div>
-      {customFields.map((field, index) => (
-        <div key={`customField${index}`}>
-          <h2>{field.label}</h2>
-          <p>{field.value}</p>
-        </div>
-      ))}
+      <p>{`From <strong>${name}</strong>(${email}).`}</p>
+      {message.value && <p className="text-lg">{message.value}</p>}
+      <div>
+        {customFields.map((field, index) => (
+          <div key={`customField${index}`}>
+            <div className="font-bold">{field.label}</div>
+            <p>{field.value}</p>
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
+  </Tailwind>
 )
 
 export default FormEmail
