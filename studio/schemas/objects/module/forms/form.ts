@@ -17,8 +17,7 @@ export default defineField({
     defineField({
       name: 'to',
       title: 'To',
-      type: 'url',
-      validation: (Rule) => Rule.uri({ scheme: ['mailto'] }),
+      type: 'string',
       description:
         'Email address to send form submissions to. i.e. contact@email.com',
     }),

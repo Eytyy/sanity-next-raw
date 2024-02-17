@@ -25,7 +25,7 @@ export default function ContactPageDisplay(props: ContactPageProps) {
     <>
       <HeadLanding settings={settings} />
       {hero && hero.content?.length > 0 && <PageHero {...hero} />}
-      <Form fields={form.fields} singleton="contact" />
+      <Form {...form} singleton="contact" />
     </>
   )
 }

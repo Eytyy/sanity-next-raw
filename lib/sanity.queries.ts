@@ -289,6 +289,9 @@ const homeHeroModuleFields = groq`
 `
 export const formQuery = groq`
   form {
+    from,
+    to,
+    subject,
     fields {
       messageField {
         "type": "textarea",

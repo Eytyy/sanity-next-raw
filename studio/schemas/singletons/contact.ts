@@ -13,7 +13,7 @@ export default defineField({
       default: true,
     },
     {
-      title: 'form',
+      title: 'Form',
       name: 'form',
     },
   ],

@@ -52,6 +52,9 @@ export type CustomFormFieldProps = {
 export type FormFieldProps = DefaultFormFieldProps | CustomFormFieldProps
 
 export interface IForm {
+  from: string
+  to: string
+  subject: string
   singleton?: string
   slug?: string
   fields: {
