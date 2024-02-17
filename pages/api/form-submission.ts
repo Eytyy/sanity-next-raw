@@ -10,7 +10,7 @@ import { formQuery } from '@/lib/sanity.queries'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 const emailConfig = {
-  from: 'Eytyy contact@core.eytyy.com',
+  from: 'Eytyy <contact@core.eytyy.com>',
   to: ['e.tayyem@gmail.com'],
   subject: 'Contact Form Submission',
 }
@@ -49,11 +49,12 @@ export default async function contactHandler(
 
     const { name, email, message, customFields } = result.data
     try {
-      await resend.emails.send({
+      const r = await resend.emails.send({
         ...emailConfig,
-        text: `Name: ${name}\nEmail: ${email}\customFields: ${JSON.stringify(customFields)}\nMessage: ${message}`,
+        text: `Name: ${name}\nEmail: ${email}\ncustomFields: ${JSON.stringify(customFields)}\nMessage: ${message}`,
         react: FormEmail({ name, email, customFields, message }),
       })
+      console.log(r)
       return res.status(200).json({ status: 'OK' })
     } catch (err) {
       console.log(err)
