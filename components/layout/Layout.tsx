@@ -6,6 +6,8 @@ import Container from '@/components/shared/Container'
 import Header from '@/components/shared/Header'
 import { Settings } from '@/lib/sanity.queries'
 
+import Footer from '../Footer'
+import Newsletter from '../Newsletter'
 import { RQProvider } from '../Providers'
 
 interface LayoutProps {
@@ -39,6 +41,7 @@ export default function Layout({
           <AlertBanner preview={preview} loading={loading} />
           <main>{children}</main>
         </div>
+        <Footer />
       </Container>
     </RQProvider>
   )

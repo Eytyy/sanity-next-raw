@@ -37,13 +37,17 @@ export default function LandingPageDisplay({
     notFound()
   }
   return (
-    <section>
-      <HeadLanding settings={settings} title={title} />
-      <PageHero content={hero.content} />
-      <div className="space-y-24 pb-24">
-        {content?.length > 0 &&
-          content.map((module) => <Module key={module._key} module={module} />)}
-      </div>
-    </section>
+    <>
+      <section>
+        <HeadLanding settings={settings} title={title} />
+        <PageHero content={hero.content} />
+        <div className="space-y-24 pb-24">
+          {content?.length > 0 &&
+            content.map((module) => (
+              <Module key={module._key} module={module} />
+            ))}
+        </div>
+      </section>
+    </>
   )
 }
